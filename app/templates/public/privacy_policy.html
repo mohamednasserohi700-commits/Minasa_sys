@@ -1,0 +1,204 @@
+{% extends "layout_public.html" %}
+{% block title %}{{ 'سياسة الخصوصية' if lang == 'ar' else 'Privacy Policy' }}{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container-xl" style="max-width:860px;">
+
+    {% if lang == 'ar' %}
+    <div style="text-align:center; margin-bottom:44px;" class="reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;"><i class="bi bi-shield-lock"></i> سياسة الخصوصية</div>
+      <h1 class="section-title">سياسة الخصوصية</h1>
+      <p class="section-sub" style="margin:0 auto;">آخر تحديث: {{ current_year }}</p>
+    </div>
+
+    <div class="glass reveal" style="padding:2.2rem; line-height:1.9;">
+      <p>
+        نحن في <strong>{{ site_settings.company_name }}</strong> نولي خصوصية زوارنا وعملائنا أهمية كبيرة. توضح
+        سياسة الخصوصية هذه أنواع البيانات التي نجمعها، وكيفية استخدامها وحمايتها، وحقوقك المتعلقة بها عند
+        استخدامك لموقعنا وخدماتنا.
+      </p>
+
+      <h5 style="margin-top:28px;">١. البيانات التي نجمعها</h5>
+      <p>عند استخدامك للموقع، قد نقوم بجمع البيانات التالية:</p>
+      <ul style="padding-inline-start:20px; color:var(--text-1);">
+        <li>معلومات التواصل: الاسم الكامل، البريد الإلكتروني، رقم الهاتف/واتساب، اسم الشركة.</li>
+        <li>تفاصيل المشروع المُرسلة عبر نموذج طلب المشروع (الوصف، الميزانية، الملفات المرفقة، وغيرها).</li>
+        <li>بيانات الحساب في حال إنشاء حساب عميل (اسم المستخدم، كلمة المرور المُشفّرة).</li>
+        <li>بيانات تقنية تلقائية مثل عنوان IP، نوع المتصفح، ونظام التشغيل لأغراض الأمان وتحسين الأداء.</li>
+        <li>ملفات تعريف الارتباط (Cookies) لأغراض تحسين تجربة الاستخدام وعرض الإعلانات (موضح أدناه).</li>
+      </ul>
+
+      <h5 style="margin-top:28px;">٢. كيفية استخدام البيانات</h5>
+      <ul style="padding-inline-start:20px; color:var(--text-1);">
+        <li>التواصل معك بخصوص طلب مشروعك وتقديم عروض الأسعار والمتابعة.</li>
+        <li>إدارة حسابك وتقديم لوحة التحكم والإشعارات والمراسلة الداخلية.</li>
+        <li>تحسين خدماتنا وموقعنا الإلكتروني بناءً على تحليل الاستخدام.</li>
+        <li>الامتثال للالتزامات القانونية ومنع الاحتيال أو إساءة الاستخدام.</li>
+        <li>عرض إعلانات ذات صلة عبر شبكات إعلانية تابعة لجهات خارجية (مثل Google AdSense).</li>
+      </ul>
+
+      <h5 style="margin-top:28px;">٣. ملفات تعريف الارتباط (Cookies) والإعلانات</h5>
+      <p>
+        يستخدم هذا الموقع ملفات تعريف الارتباط لتحسين تجربتك. كما قد نستخدم شركاء إعلانيين تابعين لجهات خارجية،
+        بما في ذلك <strong>Google</strong> وشركاؤها، لعرض الإعلانات. تُستخدم شركة Google، بصفتها طرفًا ثالثًا،
+        ملفات تعريف ارتباط لعرض الإعلانات بناءً على زياراتك السابقة لهذا الموقع أو مواقع أخرى على الإنترنت.
+      </p>
+      <p>
+        يمكنك إلغاء تفعيل الإعلانات المخصصة من خلال إعدادات الإعلانات من Google عبر
+        <a href="https://adssettings.google.com" target="_blank" rel="noopener" class="text-grad" style="font-weight:600;">adssettings.google.com</a>،
+        كما يمكنك زيارة
+        <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener" class="text-grad" style="font-weight:600;">aboutads.info</a>
+        لإلغاء تفعيل استخدام ملفات تعريف الارتباط الخاصة ببعض شركات الإعلانات التابعة لجهات خارجية.
+        لمزيد من التفاصيل حول كيفية استخدام Google للبيانات، يُرجى مراجعة
+        <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener" class="text-grad" style="font-weight:600;">صفحة سياسات Google لمواقع الشركاء</a>.
+      </p>
+
+      <h5 style="margin-top:28px;">٤. مشاركة البيانات مع أطراف ثالثة</h5>
+      <p>
+        نحن لا نبيع بياناتك الشخصية لأي طرف ثالث. قد تتم مشاركة بيانات محدودة مع مزودي خدمات موثوقين
+        (مثل خدمات الاستضافة أو معالجة الدفع أو الشبكات الإعلانية) فقط بالقدر اللازم لتشغيل الموقع وتقديم خدماتنا،
+        وذلك وفق التزامات تعاقدية بحماية البيانات.
+      </p>
+
+      <h5 style="margin-top:28px;">٥. أمان البيانات</h5>
+      <p>
+        نطبق إجراءات تقنية وتنظيمية معقولة لحماية بياناتك، بما في ذلك تشفير كلمات المرور، وحماية النماذج من
+        هجمات CSRF، والتحقق من صحة الملفات المرفوعة. مع ذلك، لا يمكن ضمان أمان مطلق لأي وسيلة نقل بيانات عبر الإنترنت.
+      </p>
+
+      <h5 style="margin-top:28px;">٦. الاحتفاظ بالبيانات</h5>
+      <p>
+        نحتفظ ببياناتك للمدة اللازمة لتقديم خدماتنا والوفاء بالأغراض الموضحة في هذه السياسة، أو وفقًا لما يقتضيه القانون.
+        يمكنك طلب حذف بياناتك في أي وقت عبر التواصل معنا.
+      </p>
+
+      <h5 style="margin-top:28px;">٧. حقوقك</h5>
+      <ul style="padding-inline-start:20px; color:var(--text-1);">
+        <li>الوصول إلى بياناتك الشخصية المحفوظة لدينا.</li>
+        <li>طلب تصحيح أو تحديث بياناتك.</li>
+        <li>طلب حذف حسابك وبياناتك.</li>
+        <li>الاعتراض على استخدام بياناتك لأغراض تسويقية أو إعلانية.</li>
+      </ul>
+
+      <h5 style="margin-top:28px;">٨. خصوصية الأطفال</h5>
+      <p>
+        لا تستهدف خدماتنا الأطفال دون سن 13 عامًا، ولا نقوم عن علم بجمع بيانات شخصية من هذه الفئة العمرية.
+      </p>
+
+      <h5 style="margin-top:28px;">٩. التعديلات على هذه السياسة</h5>
+      <p>
+        قد نقوم بتحديث سياسة الخصوصية هذه من وقت لآخر. سيتم نشر أي تعديلات على هذه الصفحة مع تحديث تاريخ آخر تعديل.
+      </p>
+
+      <h5 style="margin-top:28px;">١٠. التواصل معنا</h5>
+      <p>
+        لأي استفسار بخصوص سياسة الخصوصية أو بياناتك الشخصية، يمكنك التواصل معنا عبر:
+        <br>
+        البريد الإلكتروني: <a href="mailto:{{ site_settings.contact_email }}" class="text-grad" style="font-weight:600;">{{ site_settings.contact_email }}</a>
+        <br>
+        الهاتف: {{ site_settings.contact_phone }}
+      </p>
+    </div>
+
+    {% else %}
+    <div style="text-align:center; margin-bottom:44px;" class="reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;"><i class="bi bi-shield-lock"></i> Privacy Policy</div>
+      <h1 class="section-title">Privacy Policy</h1>
+      <p class="section-sub" style="margin:0 auto;">Last updated: {{ current_year }}</p>
+    </div>
+
+    <div class="glass reveal" style="padding:2.2rem; line-height:1.9;">
+      <p>
+        At <strong>{{ site_settings.company_name }}</strong>, we take the privacy of our visitors and clients
+        seriously. This Privacy Policy explains what data we collect, how we use and protect it, and your
+        rights regarding it when you use our website and services.
+      </p>
+
+      <h5 style="margin-top:28px;">1. Information We Collect</h5>
+      <ul style="padding-inline-start:20px; color:var(--text-1);">
+        <li>Contact details: full name, email address, phone/WhatsApp number, company name.</li>
+        <li>Project details submitted through the project request form (description, budget, attached files, etc.).</li>
+        <li>Account information if you register a client account (username, encrypted password).</li>
+        <li>Automatically collected technical data such as IP address, browser type, and operating system for security and performance purposes.</li>
+        <li>Cookies used to improve your browsing experience and to serve advertising (explained below).</li>
+      </ul>
+
+      <h5 style="margin-top:28px;">2. How We Use Your Information</h5>
+      <ul style="padding-inline-start:20px; color:var(--text-1);">
+        <li>To communicate with you about your project request, quotations, and follow-ups.</li>
+        <li>To manage your account and provide dashboard, notification, and messaging features.</li>
+        <li>To improve our services and website based on usage analysis.</li>
+        <li>To comply with legal obligations and prevent fraud or misuse.</li>
+        <li>To display relevant advertising through third-party advertising networks (such as Google AdSense).</li>
+      </ul>
+
+      <h5 style="margin-top:28px;">3. Cookies and Advertising</h5>
+      <p>
+        This website uses cookies to enhance your experience. We may also work with third-party advertising
+        partners, including <strong>Google</strong> and its partners, to serve ads. As a third-party vendor,
+        Google uses cookies to serve ads based on a user's prior visits to this website or other websites.
+      </p>
+      <p>
+        You may opt out of personalized advertising by visiting Google's Ads Settings at
+        <a href="https://adssettings.google.com" target="_blank" rel="noopener" class="text-grad" style="font-weight:600;">adssettings.google.com</a>,
+        or visit
+        <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener" class="text-grad" style="font-weight:600;">aboutads.info</a>
+        to opt out of the use of cookies by some third-party advertising vendors. For more details on how
+        Google uses data, please review
+        <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener" class="text-grad" style="font-weight:600;">Google's Partner Sites Policy</a>.
+      </p>
+
+      <h5 style="margin-top:28px;">4. Sharing Your Information</h5>
+      <p>
+        We do not sell your personal data to third parties. Limited data may be shared with trusted service
+        providers (such as hosting, payment processing, or advertising networks) only to the extent necessary
+        to operate the website and deliver our services, under appropriate data-protection commitments.
+      </p>
+
+      <h5 style="margin-top:28px;">5. Data Security</h5>
+      <p>
+        We apply reasonable technical and organizational measures to protect your data, including password
+        hashing, CSRF protection on forms, and validation of uploaded files. However, no method of transmission
+        over the internet is 100% secure.
+      </p>
+
+      <h5 style="margin-top:28px;">6. Data Retention</h5>
+      <p>
+        We retain your data for as long as necessary to provide our services and fulfill the purposes described
+        in this policy, or as required by law. You may request deletion of your data at any time by contacting us.
+      </p>
+
+      <h5 style="margin-top:28px;">7. Your Rights</h5>
+      <ul style="padding-inline-start:20px; color:var(--text-1);">
+        <li>Access the personal data we hold about you.</li>
+        <li>Request correction or update of your data.</li>
+        <li>Request deletion of your account and data.</li>
+        <li>Object to the use of your data for marketing or advertising purposes.</li>
+      </ul>
+
+      <h5 style="margin-top:28px;">8. Children's Privacy</h5>
+      <p>
+        Our services are not directed at children under the age of 13, and we do not knowingly collect personal
+        data from this age group.
+      </p>
+
+      <h5 style="margin-top:28px;">9. Changes to This Policy</h5>
+      <p>
+        We may update this Privacy Policy from time to time. Any changes will be posted on this page along with
+        an updated revision date.
+      </p>
+
+      <h5 style="margin-top:28px;">10. Contact Us</h5>
+      <p>
+        If you have any questions about this Privacy Policy or your personal data, please contact us:
+        <br>
+        Email: <a href="mailto:{{ site_settings.contact_email }}" class="text-grad" style="font-weight:600;">{{ site_settings.contact_email }}</a>
+        <br>
+        Phone: {{ site_settings.contact_phone }}
+      </p>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+{% endblock %}

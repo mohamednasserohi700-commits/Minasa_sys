@@ -1,0 +1,39 @@
+{% extends "layout_auth.html" %}
+{% block title %}Sign In{% endblock %}
+{% block auth_content %}
+<h3 style="margin-bottom:6px;">{{ t('login_title') }}</h3>
+<p class="text-muted-2" style="margin-bottom:26px; font-size:.9rem;">{{ t('login_sub') }}</p>
+
+<form method="POST" novalidate>
+  {{ form.hidden_tag() }}
+  <div class="field-group">
+    {{ form.username.label(class="form-label") }}
+    {{ form.username(class="form-control is-invalid" if form.username.errors else "form-control", placeholder="administrator or your@email.com") }}
+    {% if form.username.errors %}<span class="invalid-feedback">{{ form.username.errors[0] }}</span>{% endif %}
+  </div>
+  <div class="field-group">
+    {{ form.password.label(class="form-label") }}
+    <div style="position:relative;">
+      {{ form.password(class="form-control is-invalid" if form.password.errors else "form-control", id="password", style="padding-right:44px;") }}
+      <button type="button" data-toggle-password="password" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text-2); cursor:pointer;">
+        <i class="bi bi-eye"></i>
+      </button>
+    </div>
+    {% if form.password.errors %}<span class="invalid-feedback">{{ form.password.errors[0] }}</span>{% endif %}
+  </div>
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:22px;">
+    <label style="display:flex; align-items:center; gap:8px; font-size:.85rem; color:var(--text-1);">
+      {{ form.remember() }} {{ t('remember_me') }}
+    </label>
+    <a href="{{ url_for('auth.forgot_password') }}" class="text-grad" style="font-size:.85rem; font-weight:600;">{{ t('forgot_password') }}</a>
+  </div>
+  {{ form.submit(class="btn btn-grad btn-block") }}
+</form>
+
+<p class="text-muted-2" style="text-align:center; margin-top:22px; font-size:.88rem;">
+  {{ t('no_account') }} <a href="{{ url_for('auth.register') }}" class="text-grad" style="font-weight:700;">{{ t('create_one') }}</a>
+</p>
+<p style="text-align:center; margin-top:8px;">
+  <a href="{{ url_for('main.project_request') }}" class="text-muted-2" style="font-size:.82rem;">{{ t('or_submit_without') }}</a>
+</p>
+{% endblock %}

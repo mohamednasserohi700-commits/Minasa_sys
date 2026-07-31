@@ -1,0 +1,62 @@
+{% extends "layout_dashboard.html" %}
+{% block title %}Manage Pricing{% endblock %}
+{% block page_title %}Website Content · Pricing{% endblock %}
+{% block sidebar %}{% include "partials/admin_sidebar.html" %}{% endblock %}
+
+{% block dash_content %}
+<div class="grid-2" style="align-items:start; gap:22px;">
+  <div class="glass" style="padding:1.8rem;">
+    <h6 style="margin-bottom:16px;">Add Pricing Plan</h6>
+    <p class="text-muted-2" style="font-size:.8rem; margin-bottom:14px;"><i class="bi bi-translate"></i> Fill in both languages — each visitor sees the plan in their selected language.</p>
+    <form method="POST" novalidate>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+      <div class="pill-tabs" style="margin-bottom:14px;">
+        <span class="active" style="cursor:default;">🇬🇧 English</span>
+      </div>
+      <div class="field-group"><label class="form-label">Plan Name (EN)</label><input type="text" name="name_en" class="form-control" required></div>
+      <div class="field-group"><label class="form-label">Price (EN) — e.g. "8,000 EGP+"</label><input type="text" name="price_en" class="form-control" required></div>
+      <div class="field-group"><label class="form-label">Short Description (EN)</label><input type="text" name="description_en" class="form-control"></div>
+      <div class="field-group"><label class="form-label">Features (EN, one per line)</label><textarea name="features_en" class="form-control" rows="4"></textarea></div>
+
+      <div class="divider"></div>
+
+      <div class="pill-tabs" style="margin-bottom:14px;">
+        <span class="active" style="cursor:default;">🇪🇬 العربية</span>
+      </div>
+      <div class="field-group"><label class="form-label">اسم الباقة (عربي)</label><input type="text" name="name_ar" class="form-control" dir="rtl" required></div>
+      <div class="field-group"><label class="form-label">السعر (عربي) — مثال: "8,000 جنيه+"</label><input type="text" name="price_ar" class="form-control" dir="rtl" required></div>
+      <div class="field-group"><label class="form-label">وصف مختصر (عربي)</label><input type="text" name="description_ar" class="form-control" dir="rtl"></div>
+      <div class="field-group"><label class="form-label">الميزات (عربي، سطر لكل ميزة)</label><textarea name="features_ar" class="form-control" rows="4" dir="rtl"></textarea></div>
+
+      <div class="form-check" style="margin:16px 0;">
+        <input type="checkbox" name="is_featured" id="is_featured"><label for="is_featured">Mark as "Most Popular"</label>
+      </div>
+      <button type="submit" class="btn btn-grad btn-block"><i class="bi bi-plus-lg"></i> Add Plan</button>
+    </form>
+  </div>
+
+  <div>
+    {% for p in plans %}
+    <div class="glass card-hover" style="padding:1.4rem; margin-bottom:14px;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+        <div>
+          <h6 style="margin:0 0 4px;">{{ p.name_en }} <span class="text-muted-2">/ {{ p.name_ar }}</span> {% if p.is_featured %}<span class="badge-soft badge-primary">Featured</span>{% endif %}</h6>
+          <div class="text-grad" style="font-weight:700;">{{ p.price_en }} <span class="text-muted-2" style="font-weight:400;">/ {{ p.price_ar }}</span></div>
+        </div>
+        <form method="POST" action="{{ url_for('admin.delete_pricing', plan_id=p.id) }}" onsubmit="return confirm('Delete this plan?');">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-danger-soft btn-sm"><i class="bi bi-trash"></i></button>
+        </form>
+      </div>
+      <p class="text-muted-2" style="font-size:.84rem; margin:8px 0;">{{ p.description_en }}<br><span dir="rtl">{{ p.description_ar }}</span></p>
+      <div style="display:flex; flex-wrap:wrap; gap:6px;">
+        {% for f in p.feature_list('en') %}<span class="chip" style="font-size:.76rem;">{{ f }}</span>{% endfor %}
+      </div>
+    </div>
+    {% else %}
+    <div class="empty-state"><i class="bi bi-tags"></i><p>No pricing plans yet.</p></div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

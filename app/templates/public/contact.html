@@ -1,0 +1,37 @@
+{% extends "layout_public.html" %}
+{% block title %}Contact{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container-xl">
+    <div style="text-align:center; margin-bottom:48px;" class="reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;"><i class="bi bi-envelope"></i> {{ t('contact_eyebrow') }}</div>
+      <h1 class="section-title">{{ t('contact_title') }}</h1>
+      <p class="section-sub" style="margin:0 auto;">{{ t('contact_prefer') }} <a href="{{ url_for('main.project_request') }}" class="text-grad" style="font-weight:700;">{{ t('contact_use_form') }}</a></p>
+    </div>
+
+    <div class="grid-3 reveal">
+      <div class="glass card-hover" style="padding:1.8rem; text-align:center;">
+        <div class="icon-box" style="margin:0 auto 1rem;"><i class="bi bi-envelope-fill"></i></div>
+        <h6>{{ t('contact_email_label') }}</h6>
+        <a href="mailto:{{ site_settings.contact_email }}" class="text-muted-2">{{ site_settings.contact_email }}</a>
+      </div>
+      <div class="glass card-hover" style="padding:1.8rem; text-align:center;">
+        <div class="icon-box" style="margin:0 auto 1rem;"><i class="bi bi-telephone-fill"></i></div>
+        <h6>{{ t('contact_phone_label') }}</h6>
+        <a href="tel:{{ site_settings.contact_phone }}" class="text-muted-2">{{ site_settings.contact_phone }}</a>
+      </div>
+      <div class="glass card-hover" style="padding:1.8rem; text-align:center;">
+        <div class="icon-box" style="margin:0 auto 1rem;"><i class="bi bi-geo-alt-fill"></i></div>
+        <h6>{{ t('contact_location_label') }}</h6>
+        <span class="text-muted-2">{{ site_settings.contact_address }}</span>
+      </div>
+    </div>
+
+    <div class="glass-strong reveal" style="padding:2.4rem; margin-top:40px; text-align:center;">
+      <h4 style="margin-bottom:10px;">{{ t('cta_final') }}</h4>
+      <p class="text-muted-2" style="margin-bottom:20px;">{{ t('cta_body') }}</p>
+      <a href="{{ url_for('main.project_request') }}" class="btn btn-grad btn-lg"><i class="bi bi-send-fill"></i> {{ t('hero_cta_submit') }}</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

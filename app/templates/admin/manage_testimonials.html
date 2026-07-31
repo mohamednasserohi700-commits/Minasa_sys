@@ -1,0 +1,37 @@
+{% extends "layout_dashboard.html" %}
+{% block title %}Manage Testimonials{% endblock %}
+{% block page_title %}Website Content · Testimonials{% endblock %}
+{% block sidebar %}{% include "partials/admin_sidebar.html" %}{% endblock %}
+
+{% block dash_content %}
+<div class="grid-2" style="align-items:start; gap:22px;">
+  <div class="glass" style="padding:1.8rem;">
+    <h6 style="margin-bottom:16px;">Add Testimonial</h6>
+    <form method="POST" novalidate>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="field-group"><label class="form-label">Client Name</label><input type="text" name="client_name" class="form-control" required></div>
+      <div class="field-group"><label class="form-label">Role / Company</label><input type="text" name="client_role" class="form-control"></div>
+      <div class="field-group"><label class="form-label">Testimonial</label><textarea name="content" class="form-control" rows="4" required></textarea></div>
+      <div class="field-group"><label class="form-label">Rating (1-5)</label><input type="number" name="rating" min="1" max="5" value="5" class="form-control"></div>
+      <button type="submit" class="btn btn-grad btn-block"><i class="bi bi-plus-lg"></i> Add Testimonial</button>
+    </form>
+  </div>
+  <div>
+    {% for t in testimonials %}
+    <div class="glass card-hover" style="padding:1.4rem; margin-bottom:14px; display:flex; justify-content:space-between; gap:10px;">
+      <div>
+        <div class="stars">{% for i in range(t.rating) %}<i class="bi bi-star-fill"></i>{% endfor %}</div>
+        <p style="font-size:.85rem; margin:6px 0;">"{{ t.content }}"</p>
+        <div class="text-muted-2" style="font-size:.78rem;">{{ t.client_name }} — {{ t.client_role }}</div>
+      </div>
+      <form method="POST" action="{{ url_for('admin.delete_testimonial', testimonial_id=t.id) }}" onsubmit="return confirm('Delete this testimonial?');">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" class="btn btn-danger-soft btn-sm"><i class="bi bi-trash"></i></button>
+      </form>
+    </div>
+    {% else %}
+    <div class="empty-state"><i class="bi bi-chat-quote"></i><p>No testimonials added yet.</p></div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

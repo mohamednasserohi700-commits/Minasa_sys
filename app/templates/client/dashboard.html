@@ -1,0 +1,64 @@
+{% extends "layout_dashboard.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Welcome back, {{ current_user.full_name.split(' ')[0] }}{% endblock %}
+{% block sidebar %}{% include "partials/client_sidebar.html" %}{% endblock %}
+
+{% block dash_content %}
+<div class="grid-4" style="margin-bottom:24px;">
+  <div class="glass kpi-card card-hover">
+    <div class="kpi-top"><span class="kpi-label">Total Requests</span><i class="bi bi-kanban" style="color:var(--accent-indigo);"></i></div>
+    <div class="kpi-value">{{ stats.total }}</div>
+  </div>
+  <div class="glass kpi-card card-hover">
+    <div class="kpi-top"><span class="kpi-label">Pending</span><i class="bi bi-hourglass-split" style="color:var(--warning);"></i></div>
+    <div class="kpi-value">{{ stats.pending }}</div>
+  </div>
+  <div class="glass kpi-card card-hover">
+    <div class="kpi-top"><span class="kpi-label">In Progress</span><i class="bi bi-arrow-repeat" style="color:var(--accent-violet);"></i></div>
+    <div class="kpi-value">{{ stats.in_progress }}</div>
+  </div>
+  <div class="glass kpi-card card-hover">
+    <div class="kpi-top"><span class="kpi-label">Completed</span><i class="bi bi-check-circle" style="color:var(--success);"></i></div>
+    <div class="kpi-value">{{ stats.completed }}</div>
+  </div>
+</div>
+
+<div class="grid-2" style="align-items:start; gap:22px;">
+  <div class="glass" style="padding:1.6rem;">
+    <div class="page-head" style="margin-bottom:16px;">
+      <h6 style="margin:0;">Recent Requests</h6>
+      <a href="{{ url_for('client.my_requests') }}" class="text-grad" style="font-size:.85rem; font-weight:700;">View all →</a>
+    </div>
+    {% for r in recent_requests %}
+    <a href="{{ url_for('client.request_detail', request_id=r.id) }}" style="display:flex; justify-content:space-between; align-items:center; padding:.8rem 0; border-bottom:1px solid var(--border-soft);">
+      <div>
+        <div style="font-weight:600; font-size:.9rem;">{{ r.project_name }}</div>
+        <div class="text-muted-2 mono" style="font-size:.76rem;">{{ r.ticket_number }}</div>
+      </div>
+      <span class="badge-soft badge-{{ r.status_color }}">{{ r.status }}</span>
+    </a>
+    {% else %}
+    <div class="empty-state"><i class="bi bi-inbox"></i><p>No requests yet.</p><a href="{{ url_for('main.project_request') }}" class="btn btn-grad btn-sm">Submit a project</a></div>
+    {% endfor %}
+  </div>
+
+  <div class="glass" style="padding:1.6rem;">
+    <div class="page-head" style="margin-bottom:16px;">
+      <h6 style="margin:0;">Recent Notifications</h6>
+      <a href="{{ url_for('client.notifications') }}" class="text-grad" style="font-size:.85rem; font-weight:700;">View all →</a>
+    </div>
+    {% for n in recent_notifications %}
+    <div style="display:flex; gap:12px; padding:.8rem 0; border-bottom:1px solid var(--border-soft);">
+      <div class="icon-box" style="width:36px;height:36px; margin:0; font-size:1rem;"><i class="bi {{ n.icon }}"></i></div>
+      <div>
+        <div style="font-weight:600; font-size:.87rem;">{{ n.title }}</div>
+        <div class="text-muted-2" style="font-size:.78rem;">{{ n.body }}</div>
+        <div class="text-muted-2" style="font-size:.72rem; margin-top:2px;">{{ n.created_at|time_ago }}</div>
+      </div>
+    </div>
+    {% else %}
+    <div class="empty-state"><i class="bi bi-bell"></i><p>You're all caught up.</p></div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

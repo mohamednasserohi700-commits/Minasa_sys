@@ -1,0 +1,29 @@
+<div class="side-section-label">{{ t('sidebar_overview') }}</div>
+<a href="{{ url_for('admin.dashboard') }}" class="side-link {{ 'active' if request.endpoint=='admin.dashboard' }}"><i class="bi bi-speedometer2"></i> {{ t('admin_dashboard') }}</a>
+<a href="{{ url_for('admin.reports') }}" class="side-link {{ 'active' if request.endpoint=='admin.reports' }}"><i class="bi bi-bar-chart-line"></i> {{ t('admin_reports') }}</a>
+
+<div class="side-section-label">{{ t('sidebar_operations') }}</div>
+<a href="{{ url_for('admin.requests_list') }}" class="side-link {{ 'active' if request.endpoint in ['admin.requests_list','admin.request_detail'] }}"><i class="bi bi-kanban"></i> {{ t('admin_requests') }}</a>
+<a href="{{ url_for('admin.messages_list') }}" class="side-link {{ 'active' if request.endpoint=='admin.messages_list' }}"><i class="bi bi-chat-dots"></i> {{ t('admin_messages') }}</a>
+<a href="{{ url_for('admin.users_list') }}" class="side-link {{ 'active' if request.endpoint in ['admin.users_list','admin.user_detail'] }}"><i class="bi bi-people"></i> {{ t('admin_clients') }}</a>
+<a href="{{ url_for('admin.notifications') }}" class="side-link {{ 'active' if request.endpoint=='admin.notifications' }}">
+  <i class="bi bi-bell"></i> {{ t('admin_notifications') }}
+  {% if current_user.unread_notifications_count %}<span class="side-badge">{{ current_user.unread_notifications_count }}</span>{% endif %}
+</a>
+
+<div class="side-section-label">{{ t('sidebar_content') }}</div>
+<a href="{{ url_for('admin.manage_services') }}" class="side-link {{ 'active' if request.endpoint=='admin.manage_services' }}"><i class="bi bi-grid-1x2"></i> {{ t('admin_services') }}</a>
+<a href="{{ url_for('admin.manage_portfolio') }}" class="side-link {{ 'active' if request.endpoint=='admin.manage_portfolio' }}"><i class="bi bi-window-stack"></i> {{ t('admin_portfolio') }}</a>
+<a href="{{ url_for('admin.manage_pricing') }}" class="side-link {{ 'active' if request.endpoint=='admin.manage_pricing' }}"><i class="bi bi-tags"></i> {{ t('admin_pricing') }}</a>
+<a href="{{ url_for('admin.manage_faqs') }}" class="side-link {{ 'active' if request.endpoint=='admin.manage_faqs' }}"><i class="bi bi-question-circle"></i> {{ t('admin_faqs') }}</a>
+<a href="{{ url_for('admin.manage_testimonials') }}" class="side-link {{ 'active' if request.endpoint=='admin.manage_testimonials' }}"><i class="bi bi-chat-quote"></i> {{ t('admin_testimonials') }}</a>
+
+<div class="side-section-label">{{ t('sidebar_system') }}</div>
+<a href="{{ url_for('admin.settings') }}" class="side-link {{ 'active' if request.endpoint=='admin.settings' }}"><i class="bi bi-gear"></i> {{ t('admin_settings') }}</a>
+<a href="{{ url_for('admin.activity_logs') }}" class="side-link {{ 'active' if request.endpoint=='admin.activity_logs' }}"><i class="bi bi-clock-history"></i> {{ t('admin_activity_logs') }}</a>
+<a href="{{ url_for('admin.create_admin') }}" class="side-link {{ 'active' if request.endpoint=='admin.create_admin' }}"><i class="bi bi-shield-plus"></i> {{ t('admin_add_admin') }}</a>
+
+<div style="margin-top:24px; padding:16px; border-radius:14px; background:var(--gradient-brand-soft);">
+  <div style="font-size:.8rem; font-weight:700; margin-bottom:4px;">{{ t('signed_in_as_admin') }}</div>
+  <div class="text-muted-2" style="font-size:.76rem;">{{ t('full_permissions') }}</div>
+</div>

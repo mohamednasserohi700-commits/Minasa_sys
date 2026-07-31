@@ -1,0 +1,21 @@
+{% extends "layout_dashboard.html" %}
+{% block title %}Notifications{% endblock %}
+{% block page_title %}Notifications{% endblock %}
+{% block sidebar %}{% include "partials/client_sidebar.html" %}{% endblock %}
+
+{% block dash_content %}
+<div class="glass" style="padding:.6rem;">
+  {% for n in notifications %}
+  <a href="{{ n.link or '#' }}" style="display:flex; gap:14px; padding:1rem 1.2rem; border-bottom:1px solid var(--border-soft);">
+    <div class="icon-box" style="margin:0;"><i class="bi {{ n.icon }}"></i></div>
+    <div>
+      <div style="font-weight:600; font-size:.9rem;">{{ n.title }}</div>
+      <div class="text-muted-2" style="font-size:.83rem;">{{ n.body }}</div>
+      <div class="text-muted-2" style="font-size:.74rem; margin-top:4px;">{{ n.created_at|time_ago }}</div>
+    </div>
+  </a>
+  {% else %}
+  <div class="empty-state"><i class="bi bi-bell"></i><p>No notifications yet.</p></div>
+  {% endfor %}
+</div>
+{% endblock %}

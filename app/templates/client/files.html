@@ -1,0 +1,25 @@
+{% extends "layout_dashboard.html" %}
+{% block title %}Uploaded Files{% endblock %}
+{% block page_title %}Uploaded Files{% endblock %}
+{% block sidebar %}{% include "partials/client_sidebar.html" %}{% endblock %}
+
+{% block dash_content %}
+{% for r in requests %}
+<div class="glass" style="padding:1.4rem; margin-bottom:16px;">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+    <div>
+      <div style="font-weight:700;">{{ r.project_name }}</div>
+      <div class="text-muted-2 mono" style="font-size:.76rem;">{{ r.ticket_number }}</div>
+    </div>
+    <a href="{{ url_for('client.request_detail', request_id=r.id) }}" class="btn btn-ghost btn-sm">View Request</a>
+  </div>
+  <div style="display:flex; flex-wrap:wrap; gap:10px;">
+    {% for a in r.attachment_list() %}
+    <a href="{{ url_for('client.uploaded_file', filename=a) }}" class="chip"><i class="bi {{ a|file_icon }}"></i> {{ a.split('_',1)[-1] }}</a>
+    {% endfor %}
+  </div>
+</div>
+{% else %}
+<div class="empty-state"><i class="bi bi-folder2-open"></i><p>No files uploaded yet.</p></div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "layout_public.html" %}
+{% block title %}Project Estimation{% endblock %}
+
+{% block content %}
+<section class="section" style="position:relative; overflow:hidden;">
+  <div class="blob float-anim-slow" style="width:380px;height:380px;background:var(--accent-indigo); top:-100px; right:-120px;"></div>
+  <div class="container-xl" style="position:relative; z-index:1; max-width:980px;">
+
+    <div style="text-align:center; margin-bottom:48px;" class="reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;"><i class="bi bi-calculator"></i> {{ t('est_eyebrow') }}</div>
+      <h1 class="section-title">{{ t('est_title') }}</h1>
+      <p class="section-sub" style="margin:0 auto;">{{ t('est_sub') }}</p>
+    </div>
+
+    <div class="reveal" style="margin-bottom:28px; max-width:460px; margin-left:auto; margin-right:auto;">
+      <div class="glass card-hover" style="padding:2rem;">
+        <div class="icon-box"><i class="bi bi-clock-history"></i></div>
+        <h5 class="text-muted-2" style="text-transform:uppercase; font-size:.78rem; letter-spacing:.06em;">{{ t('est_time_label') }}</h5>
+        <div class="price-value text-grad" style="margin:6px 0 10px;">{{ t('est_time_value') }}</div>
+        <p class="text-muted-2" style="font-size:.9rem; margin:0;">{{ t('est_time_note') }}</p>
+      </div>
+    </div>
+
+    <div class="glass reveal" style="padding:2.2rem; margin-bottom:28px;">
+      <h4 style="margin-bottom:24px;"><i class="bi bi-diagram-3" style="color:var(--accent-indigo);"></i> {{ t('est_workflow_title') }}</h4>
+      <div class="timeline">
+        {% for title, desc in [
+          (t('est_step1_title'), t('est_step1_desc')),
+          (t('est_step2_title'), t('est_step2_desc')),
+          (t('est_step3_title'), t('est_step3_desc')),
+          (t('est_step4_title'), t('est_step4_desc')),
+          (t('est_step5_title'), t('est_step5_desc')),
+          (t('est_step6_title'), t('est_step6_desc')),
+        ] %}
+        <div class="timeline-item">
+          <h6 style="margin:0 0 4px; font-family:'Space Grotesk',sans-serif;">{{ title }}</h6>
+          <p class="text-muted-2" style="font-size:.87rem; margin:0;">{{ desc }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="glass reveal" style="padding:1.6rem 2rem; margin-bottom:28px; border-left:3px solid var(--accent-indigo);">
+      <p style="margin:0; font-style:italic; color:var(--text-1); line-height:1.7;">
+        <i class="bi bi-info-circle-fill" style="color:var(--accent-indigo);"></i>
+        {{ t('est_note') }}
+      </p>
+    </div>
+
+    <div class="grid-2 reveal" style="align-items:center;">
+      <div class="glass-strong card-hover" style="padding:1.8rem; display:flex; align-items:center; gap:16px;">
+        <div class="avatar-circle" style="width:56px;height:56px; font-size:1.1rem;">
+          MN
+        </div>
+        <div>
+          <div class="text-muted-2" style="font-size:.78rem; text-transform:uppercase; letter-spacing:.05em;">{{ t('est_pm_label') }}</div>
+          <h5 style="margin:2px 0;">Mohamed Naser</h5>
+          <div class="text-muted-2" style="font-size:.84rem;">{{ t('est_pm_sub') }}</div>
+        </div>
+      </div>
+
+      <div class="glass-strong card-hover" style="padding:1.8rem; text-align:center;">
+        <p style="margin:0 0 14px; font-size:.92rem; color:var(--text-1);">
+          {{ t('est_cta_body') }}
+        </p>
+        <a href="{{ url_for('main.project_request') }}" class="btn btn-grad btn-block"><i class="bi bi-send-fill"></i> {{ t('est_cta_button') }}</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

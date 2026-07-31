@@ -1,0 +1,57 @@
+<footer class="footer">
+  <div class="container-xl">
+    <div class="grid-4" style="margin-bottom:40px;">
+      <div>
+        <a href="{{ url_for('main.home') }}" class="brand" style="margin-bottom:14px;">
+          <span class="brand-mark" style="background:transparent; box-shadow:none;"><img src="{{ url_for('static', filename='images/brand/logo_256.png') }}" alt="System Makers" style="width:100%;height:100%;object-fit:contain;"></span>
+          {{ site_settings.company_name if site_settings else 'System Makers' }}
+        </a>
+        <p class="text-muted-2" style="font-size:.88rem; line-height:1.7; max-width:280px;">
+          {{ t('footer_tagline') }}
+        </p>
+        <div style="display:flex; gap:10px; margin-top:16px;">
+          <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+        </div>
+      </div>
+
+      <div>
+        <h6>{{ t('footer_company') }}</h6>
+        <a href="{{ url_for('main.home') }}#about">{{ t('footer_about') }}</a>
+        <a href="{{ url_for('main.services') }}">{{ t('nav_services') }}</a>
+        <a href="{{ url_for('main.home') }}#portfolio">{{ t('footer_portfolio') }}</a>
+        <a href="{{ url_for('main.home') }}#testimonials">{{ t('footer_testimonials') }}</a>
+      </div>
+
+      <div>
+        <h6>{{ t('footer_get_started') }}</h6>
+        <a href="{{ url_for('main.project_request') }}">{{ t('footer_submit_project') }}</a>
+        <a href="{{ url_for('main.estimation') }}">{{ t('footer_estimation') }}</a>
+        <a href="{{ url_for('main.pricing') }}">{{ t('nav_pricing') }}</a>
+        <a href="{{ url_for('main.track_request') }}">{{ t('footer_track') }}</a>
+      </div>
+
+      <div>
+        <h6>{{ t('footer_contact') }}</h6>
+        <a href="mailto:{{ site_settings.contact_email if site_settings else '' }}">
+          <i class="bi bi-envelope"></i> {{ site_settings.contact_email if site_settings else 'contact@clientflow.local' }}
+        </a>
+        <a href="tel:{{ site_settings.contact_phone if site_settings else '' }}">
+          <i class="bi bi-telephone"></i> {{ site_settings.contact_phone if site_settings else '' }}
+        </a>
+        <a href="#"><i class="bi bi-geo-alt"></i> {{ site_settings.contact_address if site_settings else 'Cairo, Egypt' }}</a>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+      <span class="text-muted-2" style="font-size:.82rem;">© {{ current_year }} {{ site_settings.company_name if site_settings else 'System Makers' }}. {{ t('footer_rights') }}</span>
+      <div style="display:flex; gap:18px; align-items:center;">
+        <a href="{{ url_for('main.privacy_policy') }}" class="text-muted-2" style="font-size:.82rem; padding:0;">{{ t('footer_privacy') }}</a>
+        <span class="text-muted-2" style="font-size:.82rem;">{{ t('footer_built_with') }}</span>
+      </div>
+    </div>
+  </div>
+</footer>

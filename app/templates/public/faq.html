@@ -1,0 +1,23 @@
+{% extends "layout_public.html" %}
+{% block title %}FAQ{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container-xl" style="max-width:800px;">
+    <div style="text-align:center; margin-bottom:48px;" class="reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;"><i class="bi bi-question-circle"></i> {{ t('faq_eyebrow') }}</div>
+      <h1 class="section-title">{{ t('faq_title') }}</h1>
+      <p class="section-sub" style="margin:0 auto;">{{ t('faq_not_found') }} <a href="{{ url_for('main.contact') }}" class="text-grad" style="font-weight:700;">{{ t('faq_contact_link') }}</a>.</p>
+    </div>
+    <div class="glass reveal" style="padding:1rem 1.6rem;">
+      {% for f in faqs %}
+      <div class="acc-item">
+        <button class="acc-btn">{{ f.question }} <i class="bi bi-plus-lg"></i></button>
+        <div class="acc-panel"><div class="acc-panel-inner">{{ f.answer }}</div></div>
+      </div>
+      {% else %}
+      <div class="empty-state"><i class="bi bi-question-circle"></i><p>{{ t('faq_empty') }}</p></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

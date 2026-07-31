@@ -1,0 +1,29 @@
+{% extends "layout_public.html" %}
+{% block title %}Pricing{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container-xl">
+    <div style="text-align:center; margin-bottom:52px;" class="reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;"><i class="bi bi-tags"></i> {{ t('pricing_eyebrow') }}</div>
+      <h1 class="section-title">{{ t('pricing_page_title') }}</h1>
+      <p class="section-sub" style="margin:0 auto;">{{ t('pricing_sub') }}</p>
+    </div>
+    <div class="grid-3 reveal">
+      {% for p in plans %}
+      <div class="glass price-card card-hover {{ 'featured' if p.is_featured else '' }}">
+        <h5 class="text-muted-2" style="text-transform:uppercase; font-size:.8rem; letter-spacing:.06em;">{{ p.name(lang) }}</h5>
+        <div class="price-value text-grad">{{ p.price(lang) }}</div>
+        <p class="text-muted-2" style="font-size:.85rem; margin-bottom:18px;">{{ p.description(lang) }}</p>
+        {% for f in p.feature_list(lang) %}
+        <div class="price-feature"><i class="bi bi-check-circle-fill"></i> {{ f }}</div>
+        {% endfor %}
+        <a href="{{ url_for('main.project_request') }}" class="btn {{ 'btn-grad' if p.is_featured else 'btn-outline' }} btn-block" style="margin-top:20px;">{{ t('get_started') }}</a>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="glass reveal" style="margin-top:40px; padding:1.8rem; text-align:center;">
+      <p style="margin:0; color:var(--text-1);">{{ t('pricing_custom_note') }} <a href="{{ url_for('main.estimation') }}" class="text-grad" style="font-weight:700;">{{ t('pricing_estimation_link') }}</a></p>
+    </div>
+  </div>
+</section>
+{% endblock %}

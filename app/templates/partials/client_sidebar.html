@@ -1,0 +1,21 @@
+<div class="side-section-label">{{ t('sidebar_overview') }}</div>
+<a href="{{ url_for('client.dashboard') }}" class="side-link {{ 'active' if request.endpoint=='client.dashboard' }}"><i class="bi bi-speedometer2"></i> {{ t('client_dashboard') }}</a>
+
+<div class="side-section-label">{{ t('sidebar_workspace') }}</div>
+<a href="{{ url_for('client.my_requests') }}" class="side-link {{ 'active' if request.endpoint in ['client.my_requests','client.request_detail'] }}"><i class="bi bi-kanban"></i> {{ t('client_my_requests') }}</a>
+<a href="{{ url_for('client.messages') }}" class="side-link {{ 'active' if request.endpoint=='client.messages' }}"><i class="bi bi-chat-dots"></i> {{ t('client_messages') }}</a>
+<a href="{{ url_for('client.files') }}" class="side-link {{ 'active' if request.endpoint=='client.files' }}"><i class="bi bi-folder2-open"></i> {{ t('client_files') }}</a>
+<a href="{{ url_for('client.notifications') }}" class="side-link {{ 'active' if request.endpoint=='client.notifications' }}">
+  <i class="bi bi-bell"></i> {{ t('client_notifications') }}
+  {% if current_user.unread_notifications_count %}<span class="side-badge">{{ current_user.unread_notifications_count }}</span>{% endif %}
+</a>
+
+<div class="side-section-label">{{ t('sidebar_account') }}</div>
+<a href="{{ url_for('client.profile') }}" class="side-link {{ 'active' if request.endpoint=='client.profile' }}"><i class="bi bi-person-circle"></i> {{ t('client_profile') }}</a>
+<a href="{{ url_for('main.project_request') }}" class="side-link"><i class="bi bi-plus-circle"></i> {{ t('client_new_request') }}</a>
+
+<div style="margin-top:24px; padding:16px; border-radius:14px; background:var(--gradient-brand-soft);">
+  <div style="font-size:.8rem; font-weight:700; margin-bottom:4px;">{{ t('need_help') }}</div>
+  <div class="text-muted-2" style="font-size:.76rem; margin-bottom:10px;">{{ t('need_help_sub') }}</div>
+  <a href="{{ url_for('client.my_requests') }}" class="btn btn-grad btn-sm btn-block">{{ t('contact_support') }}</a>
+</div>

@@ -1,0 +1,29 @@
+{% extends "layout_public.html" %}
+{% block title %}Request Submitted{% endblock %}
+{% block content %}
+<section class="section" style="display:flex; align-items:center; min-height:70vh;">
+  <div class="container-xl" style="max-width:640px;">
+    <div class="glass-strong reveal" style="padding:3rem; text-align:center;">
+      <div class="icon-box" style="margin:0 auto 1.4rem; width:72px; height:72px; font-size:2rem;">
+        <i class="bi bi-check-circle-fill" style="color:var(--success);"></i>
+      </div>
+      <h2 class="section-title">{{ t('success_title') }}</h2>
+      <p class="section-sub" style="margin:0 auto 24px;">{{ t('success_sub') }}</p>
+
+      <div class="glass" style="padding:1.4rem; margin-bottom:24px;">
+        <div class="text-muted-2" style="font-size:.78rem; text-transform:uppercase; letter-spacing:.05em;">{{ t('success_ticket_label') }}</div>
+        <div class="mono text-grad" style="font-size:1.8rem; font-weight:700; margin-top:6px;">{{ ticket.ticket_number }}</div>
+        <p class="text-muted-2" style="font-size:.82rem; margin-top:10px;">{{ t('success_ticket_note') }}</p>
+      </div>
+
+      <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+        <a href="{{ url_for('main.track_request') }}" class="btn btn-ghost"><i class="bi bi-search"></i> {{ t('success_track_btn') }}</a>
+        <a href="{{ url_for('auth.register') }}" class="btn btn-grad"><i class="bi bi-person-plus-fill"></i> {{ t('success_account_btn') }}</a>
+      </div>
+      <p class="text-muted-2" style="font-size:.82rem; margin-top:18px;">
+        {{ t('success_account_note') }}
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}

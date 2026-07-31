@@ -1,0 +1,49 @@
+{% extends "layout_dashboard.html" %}
+{% block title %}Reports{% endblock %}
+{% block page_title %}Reports & Analytics{% endblock %}
+{% block sidebar %}{% include "partials/admin_sidebar.html" %}{% endblock %}
+
+{% block dash_content %}
+<div class="page-head">
+  <div class="chip"><i class="bi bi-kanban"></i> {{ total }} Total Requests</div>
+  <div style="display:flex; gap:10px;">
+    <a href="{{ url_for('admin.export_excel') }}" class="btn btn-outline btn-sm"><i class="bi bi-file-earmark-excel"></i> Export Excel</a>
+    <a href="{{ url_for('admin.export_pdf') }}" class="btn btn-outline btn-sm"><i class="bi bi-file-earmark-pdf"></i> Export PDF</a>
+  </div>
+</div>
+
+<div class="grid-3" style="align-items:start;">
+  <div class="glass" style="padding:1.6rem;">
+    <h6 style="margin-bottom:14px;">By Status</h6>
+    <canvas id="statusChart"></canvas>
+  </div>
+  <div class="glass" style="padding:1.6rem;">
+    <h6 style="margin-bottom:14px;">By Country</h6>
+    <canvas id="countryChart"></canvas>
+  </div>
+  <div class="glass" style="padding:1.6rem;">
+    <h6 style="margin-bottom:14px;">By Platform</h6>
+    <canvas id="platformChart"></canvas>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script>
+Chart.defaults.font.family = "Inter, sans-serif";
+Chart.defaults.color = getComputedStyle(document.documentElement).getPropertyValue('--text-2').trim();
+const palette = ['#6366F1','#8B5CF6','#22D3EE','#34d399','#fbbf24','#fb7185','#38bdf8'];
+
+function pie(id, labels, data){
+  new Chart(document.getElementById(id), {
+    type: 'pie',
+    data: { labels: labels, datasets: [{ data: data, backgroundColor: palette, borderWidth: 0 }] },
+    options: { plugins: { legend: { position: 'bottom', labels: { boxWidth: 10 } } } }
+  });
+}
+pie('statusChart', {{ by_status.keys()|list|tojson }}, {{ by_status.values()|list|tojson }});
+pie('countryChart', {{ by_country.keys()|list|tojson }}, {{ by_country.values()|list|tojson }});
+pie('platformChart', {{ by_platform.keys()|list|tojson }}, {{ by_platform.values()|list|tojson }});
+</script>
+{% endblock %}

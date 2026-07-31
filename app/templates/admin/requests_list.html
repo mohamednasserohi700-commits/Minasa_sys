@@ -1,0 +1,70 @@
+{% extends "layout_dashboard.html" %}
+{% block title %}Project Requests{% endblock %}
+{% block page_title %}{{ t('admin_requests') }}{% endblock %}
+{% block sidebar %}{% include "partials/admin_sidebar.html" %}{% endblock %}
+
+{% block dash_content %}
+<div class="glass" style="padding:1.4rem; margin-bottom:20px;">
+  <form method="GET" class="grid-4" style="gap:14px;">
+    <input type="text" name="q" class="form-control" placeholder="{{ t('pr_search_placeholder') }}" value="{{ filters.get('q','') }}">
+    <select name="status" class="form-select">
+      <option value="">{{ t('pr_all_statuses') }}</option>
+      {% for s in statuses %}<option value="{{ s }}" {{ 'selected' if filters.get('status')==s }}>{{ s }}</option>{% endfor %}
+    </select>
+    <select name="country" class="form-select">
+      <option value="">{{ t('pr_all_countries') }}</option>
+      {% for c in countries %}<option value="{{ c }}" {{ 'selected' if filters.get('country')==c }}>{{ c }}</option>{% endfor %}
+    </select>
+    <div style="display:flex; gap:8px;">
+      <input type="date" name="date_from" class="form-control" value="{{ filters.get('date_from','') }}">
+      <input type="date" name="date_to" class="form-control" value="{{ filters.get('date_to','') }}">
+    </div>
+    <div style="grid-column: 1 / -1; display:flex; gap:10px;">
+      <button type="submit" class="btn btn-grad btn-sm"><i class="bi bi-funnel"></i> {{ t('pr_filter') }}</button>
+      <a href="{{ url_for('admin.requests_list') }}" class="btn btn-ghost btn-sm">{{ t('pr_reset') }}</a>
+      <a href="{{ url_for('admin.export_excel', **filters) }}" class="btn btn-outline btn-sm"><i class="bi bi-file-earmark-excel"></i> {{ t('pr_export_excel') }}</a>
+      <a href="{{ url_for('admin.export_pdf', **filters) }}" class="btn btn-outline btn-sm"><i class="bi bi-file-earmark-pdf"></i> {{ t('pr_export_pdf') }}</a>
+    </div>
+  </form>
+</div>
+
+<div class="glass table-wrap">
+  <table class="dtable">
+    <thead><tr>
+      <th>{{ t('pr_col_ticket') }}</th><th>{{ t('pr_col_client') }}</th><th>{{ t('pr_col_project') }}</th>
+      <th>{{ t('pr_col_platform') }}</th><th>{{ t('pr_col_country') }}</th><th>{{ t('pr_col_status') }}</th>
+      <th>{{ t('pr_col_submitted') }}</th><th></th>
+    </tr></thead>
+    <tbody>
+      {% for r in requests %}
+      <tr>
+        <td class="mono">{{ r.ticket_number }}</td>
+        <td>{{ r.full_name }}<br><span class="text-muted-2" style="font-size:.76rem;">{{ r.email }}</span></td>
+        <td>{{ r.project_name }}</td>
+        <td>{{ r.platform }}</td>
+        <td>{{ r.country }}</td>
+        <td><span class="badge-soft badge-{{ r.status_color }}">{{ r.status }}</span></td>
+        <td>{{ r.created_at.strftime('%d %b %Y') }}</td>
+        <td><a href="{{ url_for('admin.request_detail', request_id=r.id) }}" class="btn btn-ghost btn-sm">{{ t('pr_manage') }}</a></td>
+      </tr>
+      {% else %}
+      <tr><td colspan="8"><div class="empty-state"><i class="bi bi-inbox"></i><p>{{ t('pr_empty') }}</p></div></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if pagination.pages > 1 %}
+{% set filter_args = filters.to_dict() %}
+{% set _ = filter_args.pop('page', None) %}
+<ul class="pagination" style="margin-top:20px; justify-content:center;">
+  {% for p in pagination.iter_pages() %}
+    {% if p %}
+      <li class="{{ 'active' if p == pagination.page }}"><a href="{{ url_for('admin.requests_list', page=p, **filter_args) }}"><span>{{ p }}</span></a></li>
+    {% else %}
+      <li><span>…</span></li>
+    {% endif %}
+  {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

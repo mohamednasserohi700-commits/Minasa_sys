@@ -1,0 +1,33 @@
+{% extends "layout_dashboard.html" %}
+{% block title %}Activity Logs{% endblock %}
+{% block page_title %}Activity Logs{% endblock %}
+{% block sidebar %}{% include "partials/admin_sidebar.html" %}{% endblock %}
+
+{% block dash_content %}
+<div class="glass table-wrap">
+  <table class="dtable">
+    <thead><tr><th>Actor</th><th>Action</th><th>Target</th><th>Date</th></tr></thead>
+    <tbody>
+      {% for l in logs %}
+      <tr>
+        <td>{{ l.actor }}</td>
+        <td>{{ l.action }}</td>
+        <td class="mono">{{ l.target or '—' }}</td>
+        <td>{{ l.created_at.strftime('%d %b %Y, %H:%M') }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4"><div class="empty-state"><i class="bi bi-clock-history"></i><p>No activity recorded yet.</p></div></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% if pagination.pages > 1 %}
+<ul class="pagination" style="margin-top:20px; justify-content:center;">
+  {% for p in pagination.iter_pages() %}
+    {% if p %}
+      <li class="{{ 'active' if p == pagination.page }}"><a href="{{ url_for('admin.activity_logs', page=p) }}"><span>{{ p }}</span></a></li>
+    {% else %}<li><span>…</span></li>{% endif %}
+  {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

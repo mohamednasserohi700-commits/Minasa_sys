@@ -1,0 +1,289 @@
+{% extends "layout_public.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO ================= -->
+<section class="section" style="position:relative; overflow:hidden; padding-top:64px;">
+  <div class="blob float-anim-slow" style="width:420px;height:420px;background:var(--accent-indigo);top:-120px;left:-140px;"></div>
+  <div class="blob float-anim" style="width:360px;height:360px;background:var(--accent-cyan);top:60px;right:-120px;"></div>
+
+  <div class="container-xl" style="position:relative; z-index:1;">
+    <div class="reveal" style="max-width:720px; margin:0 auto; text-align:center;">
+      <div class="eyebrow" style="margin-left:auto; margin-right:auto;"><i class="bi bi-stars"></i> {{ t('hero_eyebrow') }}</div>
+      <h1 style="font-size:clamp(2.4rem,5vw,3.6rem); line-height:1.2; margin-bottom:20px;">
+        {{ t('hero_title_1') }} <span class="text-grad">{{ t('hero_title_2') }}</span>
+      </h1>
+      <p class="section-sub" style="margin:0 auto 32px;">
+        {{ t('hero_sub') }}
+      </p>
+      <div style="display:flex; gap:14px; flex-wrap:wrap; justify-content:center;">
+        <a href="{{ url_for('main.project_request') }}" class="btn btn-grad btn-lg">
+          <i class="bi bi-rocket-takeoff-fill"></i> {{ t('hero_cta_submit') }}
+        </a>
+        <a href="{{ url_for('main.estimation') }}" class="btn btn-ghost btn-lg">
+          <i class="bi bi-calculator"></i> {{ t('hero_cta_estimation') }}
+        </a>
+      </div>
+
+      <div style="display:flex; gap:34px; margin-top:48px; flex-wrap:wrap; justify-content:center;">
+        <div>
+          <div class="stat-num"><span data-count-to="{{ stats.projects_delivered }}">0</span>+</div>
+          <div class="text-muted-2" style="font-size:.85rem;">{{ t('stat_projects') }}</div>
+        </div>
+        <div>
+          <div class="stat-num"><span data-count-to="{{ stats.happy_clients }}">0</span>+</div>
+          <div class="text-muted-2" style="font-size:.85rem;">{{ t('stat_clients') }}</div>
+        </div>
+        <div>
+          <div class="stat-num"><span data-count-to="{{ stats.years_experience }}">0</span></div>
+          <div class="text-muted-2" style="font-size:.85rem;">{{ t('stat_years') }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section class="section-sm" id="about">
+  <div class="container-xl">
+    <div class="grid-2" style="align-items:center; gap:48px;">
+      <div class="reveal">
+        <div class="eyebrow"><i class="bi bi-info-circle"></i> {{ t('about_eyebrow') }}</div>
+        <h2 class="section-title">{{ t('about_title') }}</h2>
+        <p class="section-sub">{{ t('about_body') }}</p>
+      </div>
+      <div class="grid-2 reveal" style="gap:18px;">
+        {% for icon, title, desc in [
+          ('bi-shield-check', t('about_card1_title'), t('about_card1_desc')),
+          ('bi-chat-square-text', t('about_card2_title'), t('about_card2_desc')),
+          ('bi-graph-up-arrow', t('about_card3_title'), t('about_card3_desc')),
+          ('bi-headset', t('about_card4_title'), t('about_card4_desc')),
+        ] %}
+        <div class="glass card-hover" style="padding:1.4rem;">
+          <div class="icon-box"><i class="bi {{ icon }}"></i></div>
+          <h5 style="font-size:1rem; margin-bottom:6px;">{{ title }}</h5>
+          <p class="text-muted-2" style="font-size:.84rem; margin:0;">{{ desc }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SERVICES ================= -->
+<section class="section" id="services">
+  <div class="container-xl">
+    <div style="text-align:center; margin-bottom:52px;" class="reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;"><i class="bi bi-grid-1x2"></i> {{ t('services_eyebrow') }}</div>
+      <h2 class="section-title">{{ t('services_title') }}</h2>
+      <p class="section-sub" style="margin:0 auto;">{{ t('services_sub') }}</p>
+    </div>
+    <div class="grid-3 reveal">
+      {% for s in services %}
+      <div class="glass card-hover" style="padding:1.8rem;">
+        <div class="icon-box"><i class="bi {{ s.icon }}"></i></div>
+        <h5 style="margin-bottom:8px;">{{ s.title }}</h5>
+        <p class="text-muted-2" style="font-size:.89rem; line-height:1.6; margin:0;">{{ s.description }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ================= WHY CHOOSE US ================= -->
+<section class="section-sm">
+  <div class="container-xl">
+    <div class="glass-strong reveal" style="padding:3rem; position:relative; overflow:hidden;">
+      <div class="blob" style="width:300px;height:300px;background:var(--accent-violet); top:-100px; right:-60px;"></div>
+      <div style="position:relative; z-index:1;">
+        <div class="eyebrow"><i class="bi bi-award"></i> {{ t('why_eyebrow') }}</div>
+        <h2 class="section-title" style="max-width:600px;">{{ t('why_title') }}</h2>
+        <div class="grid-4" style="margin-top:32px;">
+          {% for num, label in [('98%', t('why_stat1')),('24/7', t('why_stat2')),('6+', t('why_stat3')),('100%', t('why_stat4'))] %}
+          <div>
+            <div class="stat-num text-grad">{{ num }}</div>
+            <div class="text-muted-2" style="font-size:.85rem;">{{ label }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PORTFOLIO ================= -->
+<section class="section" id="portfolio">
+  <div class="container-xl">
+    <div style="text-align:center; margin-bottom:52px;" class="reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;"><i class="bi bi-briefcase"></i> {{ t('portfolio_eyebrow') }}</div>
+      <h2 class="section-title">{{ t('portfolio_title') }}</h2>
+      <p class="section-sub" style="margin:0 auto;">{{ t('portfolio_ready_badge') }}</p>
+    </div>
+    <div class="grid-3 reveal">
+      {% for item in portfolio_items %}
+      <div class="glass card-hover" style="padding:0; overflow:hidden;">
+        <div style="height:170px; overflow:hidden; position:relative; background:var(--gradient-brand-soft);">
+          {% if item.image %}
+          <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.title }}"
+               style="width:100%; height:100%; object-fit:cover; object-position:top;">
+          {% endif %}
+          <span class="badge-soft badge-success" style="position:absolute; top:12px; {{ 'left:12px;' if dir == 'rtl' else 'right:12px;' }} backdrop-filter:blur(8px);">
+            <i class="bi bi-check-circle-fill"></i> {{ t('portfolio_ready_badge') }}
+          </span>
+        </div>
+        <div style="padding:1.4rem;">
+          <span class="badge-soft badge-primary" style="margin-bottom:10px;">{{ item.tag }}</span>
+          <h5 style="margin:8px 0 6px;">{{ item.title }}</h5>
+          <p class="text-muted-2" style="font-size:.86rem; margin:0 0 14px;">{{ item.description }}</p>
+
+          {% if item.demo_url %}
+          <button type="button" class="btn btn-outline btn-sm btn-block demo-trigger"
+                  data-demo-url="{{ item.demo_url }}"
+                  data-demo-user="{{ item.demo_username or '' }}"
+                  data-demo-pass="{{ item.demo_password or '' }}">
+            <i class="bi bi-play-circle"></i> {{ t('try_demo') }}
+          </button>
+          <div class="demo-credentials" style="display:none; margin-top:10px; padding:.8rem 1rem; border-radius:12px; background:var(--surface); border:1px solid var(--border-soft);">
+            {% if item.demo_username %}
+            <div style="font-size:.78rem; color:var(--text-2);">{{ t('demo_username_label') }}: <span class="mono text-1" style="user-select:all;">{{ item.demo_username }}</span></div>
+            {% endif %}
+            {% if item.demo_password %}
+            <div style="font-size:.78rem; color:var(--text-2); margin-top:2px;">{{ t('demo_password_label') }}: <span class="mono text-1" style="user-select:all;">{{ item.demo_password }}</span></div>
+            {% endif %}
+          </div>
+          {% else %}
+          <span class="chip" style="font-size:.78rem; color:var(--text-2);"><i class="bi bi-hourglass-split"></i> {{ t('no_demo_available') }}</span>
+          {% endif %}
+        </div>
+      </div>
+      {% else %}
+      <div class="empty-state"><i class="bi bi-window-stack"></i><p>{{ t('no_demo_available') }}</p></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ================= TECHNOLOGIES ================= -->
+<section class="section-sm">
+  <div class="container-xl">
+    <div style="text-align:center; margin-bottom:40px;" class="reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;"><i class="bi bi-cpu"></i> {{ t('tech_eyebrow') }}</div>
+      <h2 class="section-title">{{ t('tech_title') }}</h2>
+    </div>
+    <div class="reveal" style="display:flex; flex-wrap:wrap; justify-content:center; gap:14px;">
+      {% for tname in ['Python','Flask','React','Vue.js','Flutter','PostgreSQL','Docker','REST API','Node.js','TypeScript'] %}
+      <span class="chip" style="font-size:.86rem; padding:.55rem 1.1rem;"><i class="bi bi-check2-circle" style="color:var(--accent-indigo);"></i> {{ tname }}</span>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section class="section" id="how-it-works">
+  <div class="container-xl">
+    <div style="text-align:center; margin-bottom:52px;" class="reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;"><i class="bi bi-signpost-2"></i> {{ t('how_eyebrow') }}</div>
+      <h2 class="section-title">{{ t('how_title') }}</h2>
+    </div>
+    <div class="grid-3 reveal" style="gap:20px;">
+      {% for icon, title, desc in [
+        ('bi-pencil-square', '1. ' + t('est_step1_title'), t('est_step1_desc')),
+        ('bi-search', '2. ' + t('how_step2_title'), t('how_step2_desc')),
+        ('bi-palette', '3. ' + t('est_step2_title'), t('est_step2_desc')),
+        ('bi-code-slash', '4. ' + t('est_step3_title'), t('est_step3_desc')),
+        ('bi-bug', '5. ' + t('est_step4_title'), t('est_step4_desc')),
+        ('bi-rocket-takeoff', '6. ' + t('est_step6_title'), t('est_step6_desc')),
+      ] %}
+      <div class="glass step-card card-hover">
+        <div class="icon-box"><i class="bi {{ icon }}"></i></div>
+        <h5 style="margin-bottom:8px;">{{ title }}</h5>
+        <p class="text-muted-2" style="font-size:.87rem; margin:0;">{{ desc }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRICING ================= -->
+<section class="section-sm" id="pricing">
+  <div class="container-xl">
+    <div style="text-align:center; margin-bottom:52px;" class="reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;"><i class="bi bi-tags"></i> {{ t('pricing_eyebrow') }}</div>
+      <h2 class="section-title">{{ t('pricing_title') }}</h2>
+      <p class="section-sub" style="margin:0 auto;">{{ t('pricing_sub') }}</p>
+    </div>
+    <div class="grid-3 reveal">
+      {% for p in plans %}
+      <div class="glass price-card card-hover {{ 'featured' if p.is_featured else '' }}">
+        <h5 class="text-muted-2" style="text-transform:uppercase; font-size:.8rem; letter-spacing:.06em;">{{ p.name(lang) }}</h5>
+        <div class="price-value text-grad">{{ p.price(lang) }}</div>
+        <p class="text-muted-2" style="font-size:.85rem; margin-bottom:18px;">{{ p.description(lang) }}</p>
+        {% for f in p.feature_list(lang) %}
+        <div class="price-feature"><i class="bi bi-check-circle-fill"></i> {{ f }}</div>
+        {% endfor %}
+        <a href="{{ url_for('main.project_request') }}" class="btn {{ 'btn-grad' if p.is_featured else 'btn-outline' }} btn-block" style="margin-top:20px;">{{ t('get_started') }}</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ================= TESTIMONIALS ================= -->
+<section class="section" id="testimonials">
+  <div class="container-xl">
+    <div style="text-align:center; margin-bottom:52px;" class="reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;"><i class="bi bi-chat-quote"></i> {{ t('testimonials_eyebrow') }}</div>
+      <h2 class="section-title">{{ t('testimonials_title') }}</h2>
+    </div>
+    <div class="grid-3 reveal">
+      {% for tst in testimonials %}
+      <div class="glass testimonial-card card-hover">
+        <div class="stars">{% for i in range(tst.rating) %}<i class="bi bi-star-fill"></i>{% endfor %}</div>
+        <p style="margin:14px 0 20px; font-size:.92rem; line-height:1.7; color:var(--text-1);">"{{ tst.content }}"</p>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div class="avatar-circle">{{ tst.client_name[:2]|upper }}</div>
+          <div>
+            <div style="font-weight:700; font-size:.9rem;">{{ tst.client_name }}</div>
+            <div class="text-muted-2" style="font-size:.78rem;">{{ tst.client_role }}</div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="section-sm" id="faq">
+  <div class="container-xl" style="max-width:800px;">
+    <div style="text-align:center; margin-bottom:40px;" class="reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;"><i class="bi bi-question-circle"></i> {{ t('faq_eyebrow') }}</div>
+      <h2 class="section-title">{{ t('faq_title') }}</h2>
+    </div>
+    <div class="glass reveal" style="padding:1rem 1.6rem;">
+      {% for f in faqs %}
+      <div class="acc-item">
+        <button class="acc-btn">{{ f.question }} <i class="bi bi-plus-lg"></i></button>
+        <div class="acc-panel"><div class="acc-panel-inner">{{ f.answer }}</div></div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT / CTA ================= -->
+<section class="section" id="contact">
+  <div class="container-xl">
+    <div class="glass-strong reveal" style="padding:3.5rem; text-align:center; position:relative; overflow:hidden;">
+      <div class="blob float-anim" style="width:320px;height:320px;background:var(--accent-cyan); top:-80px; left:40%;"></div>
+      <div style="position:relative; z-index:1;">
+        <h2 class="section-title" style="margin:0 auto 14px;">{{ t('cta_title') }}</h2>
+        <p class="section-sub" style="margin:0 auto 28px;">{{ t('cta_body') }}</p>
+        <a href="{{ url_for('main.project_request') }}" class="btn btn-grad btn-lg"><i class="bi bi-send-fill"></i> {{ t('hero_cta_submit') }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

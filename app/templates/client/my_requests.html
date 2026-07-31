@@ -1,0 +1,39 @@
+{% extends "layout_dashboard.html" %}
+{% block title %}My Requests{% endblock %}
+{% block page_title %}{{ t('client_my_requests') }}{% endblock %}
+{% block sidebar %}{% include "partials/client_sidebar.html" %}{% endblock %}
+
+{% block dash_content %}
+<div class="page-head">
+  <div class="pill-tabs">
+    <a href="{{ url_for('client.my_requests') }}" class="{{ 'active' if not status_filter }}">{{ t('pr_all_statuses') }}</a>
+    {% for s in ['Pending','Reviewing','Approved','In Progress','Completed','Rejected'] %}
+    <a href="{{ url_for('client.my_requests', status=s) }}" class="{{ 'active' if status_filter==s }}">{{ s }}</a>
+    {% endfor %}
+  </div>
+  <a href="{{ url_for('main.project_request') }}" class="btn btn-grad btn-sm"><i class="bi bi-plus-lg"></i> {{ t('client_new_request') }}</a>
+</div>
+
+<div class="glass table-wrap">
+  <table class="dtable">
+    <thead><tr>
+      <th>{{ t('pr_col_ticket') }}</th><th>{{ t('pr_col_project') }}</th><th>{{ t('pr_col_platform') }}</th>
+      <th>{{ t('pr_col_status') }}</th><th>{{ t('pr_col_submitted') }}</th><th></th>
+    </tr></thead>
+    <tbody>
+      {% for r in requests %}
+      <tr>
+        <td class="mono">{{ r.ticket_number }}</td>
+        <td>{{ r.project_name }}</td>
+        <td>{{ r.platform }}</td>
+        <td><span class="badge-soft badge-{{ r.status_color }}">{{ r.status }}</span></td>
+        <td>{{ r.created_at.strftime('%d %b %Y') }}</td>
+        <td><a href="{{ url_for('client.request_detail', request_id=r.id) }}" class="btn btn-ghost btn-sm">{{ t('pr_manage') }}</a></td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6"><div class="empty-state"><i class="bi bi-inbox"></i><p>{{ t('pr_empty') }}</p></div></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

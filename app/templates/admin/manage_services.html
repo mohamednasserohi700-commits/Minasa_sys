@@ -1,0 +1,45 @@
+{% extends "layout_dashboard.html" %}
+{% block title %}Manage Services{% endblock %}
+{% block page_title %}Website Content · Services{% endblock %}
+{% block sidebar %}{% include "partials/admin_sidebar.html" %}{% endblock %}
+
+{% block dash_content %}
+<div class="grid-2" style="align-items:start; gap:22px;">
+  <div class="glass" style="padding:1.8rem;">
+    <h6 style="margin-bottom:16px;">Add New Service</h6>
+    <form method="POST" novalidate>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="field-group"><label class="form-label">Title</label><input type="text" name="title" class="form-control" required></div>
+      <div class="field-group"><label class="form-label">Description</label><textarea name="description" class="form-control" required></textarea></div>
+      <div class="field-group"><label class="form-label">Bootstrap Icon Class</label><input type="text" name="icon" class="form-control" placeholder="bi-globe2" value="bi-stars"></div>
+      <button type="submit" class="btn btn-grad btn-block"><i class="bi bi-plus-lg"></i> Add Service</button>
+    </form>
+  </div>
+
+  <div>
+    {% for s in services %}
+    <div class="glass card-hover" style="padding:1.4rem; margin-bottom:14px; display:flex; justify-content:space-between; align-items:flex-start;">
+      <div style="display:flex; gap:14px;">
+        <div class="icon-box" style="margin:0;"><i class="bi {{ s.icon }}"></i></div>
+        <div>
+          <h6 style="margin:0 0 4px;">{{ s.title }}</h6>
+          <p class="text-muted-2" style="font-size:.83rem; margin:0; max-width:340px;">{{ s.description }}</p>
+        </div>
+      </div>
+      <div style="display:flex; gap:6px;">
+        <form method="POST" action="{{ url_for('admin.toggle_service', service_id=s.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-ghost btn-sm">{{ 'Hide' if s.is_active else 'Show' }}</button>
+        </form>
+        <form method="POST" action="{{ url_for('admin.delete_service', service_id=s.id) }}" onsubmit="return confirm('Delete this service?');">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-danger-soft btn-sm"><i class="bi bi-trash"></i></button>
+        </form>
+      </div>
+    </div>
+    {% else %}
+    <div class="empty-state"><i class="bi bi-grid"></i><p>No services added yet.</p></div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

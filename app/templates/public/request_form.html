@@ -1,0 +1,94 @@
+{% extends "layout_public.html" %}
+{% block title %}Submit Project Request{% endblock %}
+
+{% macro field(f, col='') %}
+<div class="field-group {{ col }}">
+  {{ f.label(class="form-label") }}
+  {{ f(class="form-control is-invalid" if f.errors else "form-control") }}
+  {% if f.errors %}<span class="invalid-feedback">{{ f.errors[0] }}</span>{% endif %}
+</div>
+{% endmacro %}
+
+{% macro select_field(f, col='') %}
+<div class="field-group {{ col }}">
+  {{ f.label(class="form-label") }}
+  {{ f(class="form-select is-invalid" if f.errors else "form-select") }}
+  {% if f.errors %}<span class="invalid-feedback">{{ f.errors[0] }}</span>{% endif %}
+</div>
+{% endmacro %}
+
+{% block content %}
+<section class="section" style="padding-top:56px;">
+  <div class="container-xl" style="max-width:900px;">
+    <div style="text-align:center; margin-bottom:40px;" class="reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;"><i class="bi bi-send-fill"></i> {{ t('request_eyebrow') }}</div>
+      <h1 class="section-title">{{ t('request_title') }}</h1>
+      <p class="section-sub" style="margin:0 auto;">{{ t('request_sub') }}</p>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="glass reveal" style="padding:2.4rem;" novalidate>
+      {{ form.hidden_tag() }}
+
+      <h5 style="margin-bottom:18px;"><i class="bi bi-person-fill" style="color:var(--accent-indigo);"></i> {{ t('section_contact_info') }}</h5>
+      <div class="grid-2">
+        {{ field(form.full_name) }}
+        {{ field(form.company) }}
+        {{ field(form.phone) }}
+        {{ field(form.whatsapp) }}
+        {{ field(form.email) }}
+        {{ field(form.business_type) }}
+        {{ field(form.country) }}
+        {{ field(form.city) }}
+      </div>
+
+      <div class="divider"></div>
+
+      <h5 style="margin-bottom:18px;"><i class="bi bi-kanban-fill" style="color:var(--accent-indigo);"></i> {{ t('section_project_details') }}</h5>
+      <div class="grid-2">
+        {{ field(form.project_name) }}
+        {{ field(form.project_category) }}
+      </div>
+      {{ select_field(form.platform) }}
+      {{ field(form.description) }}
+      {{ field(form.expected_features) }}
+      <div class="grid-2">
+        {{ field(form.target_users) }}
+        {{ select_field(form.preferred_contact) }}
+      </div>
+      <div class="grid-2">
+        {{ select_field(form.budget) }}
+        {{ select_field(form.delivery_time) }}
+      </div>
+      {{ field(form.existing_system) }}
+      {{ field(form.additional_notes) }}
+
+      <div class="divider"></div>
+
+      <h5 style="margin-bottom:18px;"><i class="bi bi-paperclip" style="color:var(--accent-indigo);"></i> {{ t('section_attachments') }}</h5>
+      <div class="field-group">
+        <label class="form-label">{{ t('attach_label') }}</label>
+        <div class="dropzone" data-dropzone="{{ form.attachments.id }}">
+          <i class="bi bi-cloud-arrow-up-fill"></i>
+          <p style="margin:.6rem 0 0; font-size:.9rem;">{{ t('dropzone_text') }}</p>
+          <p class="text-muted-2" style="font-size:.76rem; margin:.2rem 0 0;">{{ t('dropzone_note') }}</p>
+        </div>
+        {{ form.attachments(style="display:none;") }}
+        <div id="{{ form.attachments.id }}-list" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;"></div>
+        {% if form.attachments.errors %}<span class="invalid-feedback">{{ form.attachments.errors[0] }}</span>{% endif %}
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="form-check" style="margin-bottom:24px;">
+        {{ form.accept_terms(id="accept_terms") }}
+        <label for="accept_terms" style="font-size:.88rem; color:var(--text-1);">
+          {{ t('accept_terms_text') }} <a href="#" class="text-grad" style="font-weight:600;">{{ t('terms_link') }}</a> {{ t('accept_terms_confirm') }}
+        </label>
+      </div>
+      {% if form.accept_terms.errors %}<span class="invalid-feedback">{{ form.accept_terms.errors[0] }}</span>{% endif %}
+
+      {{ form.submit(class="btn btn-grad btn-lg btn-block") }}
+    </form>
+  </div>
+</section>
+{% endblock %}

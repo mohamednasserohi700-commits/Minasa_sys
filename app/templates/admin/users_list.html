@@ -1,0 +1,40 @@
+{% extends "layout_dashboard.html" %}
+{% block title %}Clients{% endblock %}
+{% block page_title %}Client Accounts{% endblock %}
+{% block sidebar %}{% include "partials/admin_sidebar.html" %}{% endblock %}
+
+{% block dash_content %}
+<div class="glass" style="padding:1.2rem; margin-bottom:20px;">
+  <form method="GET" style="display:flex; gap:10px;">
+    <input type="text" name="q" class="form-control" placeholder="Search clients by name, email, username..." value="{{ q }}">
+    <button type="submit" class="btn btn-grad"><i class="bi bi-search"></i></button>
+  </form>
+</div>
+
+<div class="glass table-wrap">
+  <table class="dtable">
+    <thead><tr><th>Client</th><th>Email</th><th>Phone</th><th>Requests</th><th>Status</th><th>Joined</th><th></th></tr></thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td style="display:flex; align-items:center; gap:10px;">
+          <div class="avatar-circle" style="width:32px;height:32px;font-size:.72rem;">{{ u.full_name[:2]|upper }}</div>
+          {{ u.full_name }}
+        </td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.phone or '—' }}</td>
+        <td>{{ u.requests.count() }}</td>
+        <td>
+          {% if u.is_active_account %}<span class="badge-soft badge-success">Active</span>
+          {% else %}<span class="badge-soft badge-danger">Deactivated</span>{% endif %}
+        </td>
+        <td>{{ u.created_at.strftime('%d %b %Y') }}</td>
+        <td><a href="{{ url_for('admin.user_detail', user_id=u.id) }}" class="btn btn-ghost btn-sm">View</a></td>
+      </tr>
+      {% else %}
+      <tr><td colspan="7"><div class="empty-state"><i class="bi bi-people"></i><p>No client accounts found.</p></div></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

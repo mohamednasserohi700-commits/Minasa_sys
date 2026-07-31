@@ -1,0 +1,77 @@
+{% extends "layout_public.html" %}
+{% block title %}Track Your Request{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container-xl" style="max-width:720px;">
+    <div style="text-align:center; margin-bottom:40px;" class="reveal">
+      <div class="eyebrow" style="margin-left:auto;margin-right:auto;"><i class="bi bi-search"></i> {{ t('track_eyebrow') }}</div>
+      <h1 class="section-title">{{ t('track_title') }}</h1>
+      <p class="section-sub" style="margin:0 auto;">{{ t('track_sub') }}</p>
+    </div>
+
+    <form method="POST" class="glass reveal" style="padding:2rem; display:flex; gap:14px; flex-wrap:wrap;">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="field-group" style="flex:1; min-width:200px; margin:0;">
+        <label class="form-label">{{ t('track_ticket_label') }}</label>
+        <input type="text" name="ticket_number" class="form-control mono" placeholder="CF-2026-XXXXXX" required>
+      </div>
+      <div class="field-group" style="flex:1; min-width:200px; margin:0;">
+        <label class="form-label">{{ t('track_email_label') }}</label>
+        <input type="email" name="email" class="form-control" placeholder="you@email.com" required>
+      </div>
+      <button type="submit" class="btn btn-grad" style="align-self:flex-end;"><i class="bi bi-search"></i> {{ t('track_button') }}</button>
+    </form>
+
+    {% if ticket %}
+    <div class="glass-strong reveal" style="padding:2rem; margin-top:28px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:16px;">
+        <div>
+          <div class="text-muted-2 mono" style="font-size:.8rem;">{{ ticket.ticket_number }}</div>
+          <h4 style="margin:4px 0;">{{ ticket.project_name }}</h4>
+        </div>
+        <span class="badge-soft badge-{{ ticket.status_color }}">{{ ticket.status }}</span>
+      </div>
+      <div class="divider"></div>
+      <div class="grid-2">
+        <div><span class="text-muted-2" style="font-size:.8rem;">{{ t('track_submitted') }}</span><p style="margin:2px 0;">{{ ticket.created_at.strftime('%d %b %Y') }}</p></div>
+        <div><span class="text-muted-2" style="font-size:.8rem;">{{ t('track_platform') }}</span><p style="margin:2px 0;">{{ ticket.platform }}</p></div>
+        <div><span class="text-muted-2" style="font-size:.8rem;">{{ t('track_budget') }}</span><p style="margin:2px 0;">{{ ticket.budget or t('track_not_specified') }}</p></div>
+        <div><span class="text-muted-2" style="font-size:.8rem;">{{ t('track_updated') }}</span><p style="margin:2px 0;">{{ ticket.updated_at.strftime('%d %b %Y') }}</p></div>
+      </div>
+      <p class="text-muted-2" style="font-size:.86rem; margin-top:16px;">
+        {{ t('track_cta') }}
+        <a href="{{ url_for('auth.register') }}" class="text-grad" style="font-weight:700;">{{ t('track_create_account') }}</a>.
+      </p>
+    </div>
+
+    <div class="glass reveal" style="padding:2rem; margin-top:20px;">
+      <h6 style="margin-bottom:16px;"><i class="bi bi-chat-dots"></i> {{ t('pr_conversation') }}</h6>
+      <div style="max-height:360px; overflow-y:auto; margin-bottom:18px;">
+        {% for m in messages %}
+        <div style="display:flex; {{ 'flex-direction:row-reverse;' if m.is_from_admin }} gap:10px; margin-bottom:14px;">
+          <div class="avatar-circle" style="width:34px;height:34px;font-size:.72rem; flex-shrink:0;">{{ 'SM' if m.is_from_admin else ticket.full_name[:2]|upper }}</div>
+          <div style="max-width:75%;">
+            <div class="glass" style="padding:.7rem 1rem; {{ 'background:var(--gradient-brand-soft);' if m.is_from_admin }}">
+              <p style="margin:0; font-size:.87rem; line-height:1.6;">{{ m.body }}</p>
+            </div>
+            <div class="text-muted-2" style="font-size:.7rem; margin-top:4px; {{ 'text-align:right;' if m.is_from_admin }}">{{ m.created_at|time_ago }}</div>
+          </div>
+        </div>
+        {% else %}
+        <div class="empty-state"><i class="bi bi-chat"></i><p>No messages yet.</p></div>
+        {% endfor %}
+      </div>
+      <form method="POST" action="{{ url_for('main.track_reply') }}" style="display:flex; gap:10px;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="ticket_number" value="{{ ticket.ticket_number }}">
+        <input type="hidden" name="email" value="{{ ticket.email }}">
+        <input type="text" name="body" class="form-control" placeholder="{{ t('pr_reply_placeholder') }}" required>
+        <button type="submit" class="btn btn-grad"><i class="bi bi-send-fill"></i></button>
+      </form>
+    </div>
+    {% elif searched %}
+    <div class="empty-state reveal"><i class="bi bi-x-circle"></i><p>{{ t('track_not_found') }}</p></div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

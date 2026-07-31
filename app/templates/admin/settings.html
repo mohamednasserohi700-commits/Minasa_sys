@@ -1,0 +1,51 @@
+{% extends "layout_dashboard.html" %}
+{% block title %}Settings{% endblock %}
+{% block page_title %}System Settings{% endblock %}
+{% block sidebar %}{% include "partials/admin_sidebar.html" %}{% endblock %}
+
+{% block dash_content %}
+<div class="grid-2" style="align-items:start; gap:22px;">
+  <div class="glass" style="padding:1.8rem;">
+    <h6 style="margin-bottom:16px;"><i class="bi bi-envelope"></i> Contact Information</h6>
+    <form method="POST" novalidate>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="field-group"><label class="form-label">Contact Email</label><input type="email" name="contact_email" class="form-control" value="{{ settings.contact_email }}"></div>
+      <div class="field-group"><label class="form-label">Contact Phone</label><input type="text" name="contact_phone" class="form-control" value="{{ settings.contact_phone }}"></div>
+      <div class="field-group"><label class="form-label">WhatsApp Number</label><input type="text" name="whatsapp_number" class="form-control" value="{{ settings.whatsapp_number }}"></div>
+      <div class="field-group"><label class="form-label">Address</label><input type="text" name="contact_address" class="form-control" value="{{ settings.contact_address }}"></div>
+      <div class="divider"></div>
+      <div class="grid-2">
+        <div class="field-group"><label class="form-label">Facebook URL</label><input type="text" name="facebook_url" class="form-control" value="{{ settings.facebook_url }}"></div>
+        <div class="field-group"><label class="form-label">Twitter/X URL</label><input type="text" name="twitter_url" class="form-control" value="{{ settings.twitter_url }}"></div>
+        <div class="field-group"><label class="form-label">LinkedIn URL</label><input type="text" name="linkedin_url" class="form-control" value="{{ settings.linkedin_url }}"></div>
+        <div class="field-group"><label class="form-label">Instagram URL</label><input type="text" name="instagram_url" class="form-control" value="{{ settings.instagram_url }}"></div>
+      </div>
+      <button type="submit" class="btn btn-grad"><i class="bi bi-check-lg"></i> Save Settings</button>
+    </form>
+  </div>
+
+  <div>
+    <div class="glass" style="padding:1.8rem; margin-bottom:20px;">
+      <h6 style="margin-bottom:12px;"><i class="bi bi-database"></i> Database Backup</h6>
+      <p class="text-muted-2" style="font-size:.85rem; margin-bottom:16px;">
+        Download a snapshot of the current database (SQLite dev environments). For PostgreSQL on Railway,
+        use <code>railway db</code> or <code>pg_dump</code> from your terminal — see the README for details.
+      </p>
+      <a href="{{ url_for('admin.backup_database') }}" class="btn btn-outline btn-block"><i class="bi bi-cloud-download"></i> Download Backup</a>
+    </div>
+
+    <div class="glass" style="padding:1.8rem;">
+      <h6 style="margin-bottom:12px;"><i class="bi bi-info-circle"></i> System Info</h6>
+      <div style="display:flex; justify-content:space-between; padding:.5rem 0; border-bottom:1px solid var(--border-soft);">
+        <span class="text-muted-2" style="font-size:.85rem;">Platform</span><span style="font-size:.85rem;">System Makers Platform v1.0</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; padding:.5rem 0; border-bottom:1px solid var(--border-soft);">
+        <span class="text-muted-2" style="font-size:.85rem;">Framework</span><span style="font-size:.85rem;">Flask + SQLAlchemy</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; padding:.5rem 0;">
+        <span class="text-muted-2" style="font-size:.85rem;">Logged in as</span><span style="font-size:.85rem;">{{ current_user.username }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

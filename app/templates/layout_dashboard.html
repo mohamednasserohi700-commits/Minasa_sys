@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-mark" style="background:transparent; box-shadow:none;"><img src="{{ url_for('static', filename='images/brand/logo_256.png') }}" alt="System Makers" style="width:100%;height:100%;object-fit:contain;"></span>
+      <span style="font-family:'Space Grotesk',sans-serif; font-weight:700;">System Makers</span>
+    </div>
+    {% block sidebar %}{% endblock %}
+  </aside>
+
+  <div class="main-content">
+    <div class="topbar">
+      <div style="display:flex; align-items:center; gap:14px;">
+        <button class="theme-toggle" data-toggle-sidebar style="display:none;" id="sidebarToggle"><i class="bi bi-list"></i></button>
+        <h5 style="margin:0;">{% block page_title %}Dashboard{% endblock %}</h5>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <a href="{{ url_for('main.set_language', lang_code='ar' if lang == 'en' else 'en') }}" class="theme-toggle lang-toggle" style="width:auto; padding:0 12px; font-size:.78rem; font-weight:700;" title="Switch language">
+          {{ t('lang_switch') }}
+        </a>
+        <button class="theme-toggle" data-theme-toggle title="Toggle theme">
+          <i class="bi bi-sun-fill" data-theme-icon></i>
+        </button>
+        <a href="{{ url_for('admin.notifications') if current_user.is_admin else url_for('client.notifications') }}"
+           class="theme-toggle" style="position:relative;" title="Notifications">
+          <i class="bi bi-bell"></i>
+          <span data-notif-count style="display:none; position:absolute; top:-4px; right:-4px; background:var(--danger); color:#fff; font-size:.62rem; font-weight:700; min-width:16px; height:16px; border-radius:999px; align-items:center; justify-content:center; padding:0 3px;">0</span>
+        </a>
+        <div class="chip" style="cursor:pointer;">
+          <div class="avatar-circle" style="width:26px; height:26px; font-size:.68rem;">{{ current_user.full_name[:2]|upper }}</div>
+          <span style="font-size:.84rem;">{{ current_user.full_name.split(' ')[0] }}</span>
+        </div>
+        <a href="{{ url_for('auth.logout') }}" class="theme-toggle" title="Logout"><i class="bi bi-box-arrow-right"></i></a>
+      </div>
+    </div>
+    <div class="content-area">
+      {% block dash_content %}{% endblock %}
+    </div>
+  </div>
+</div>
+<style>
+@media (max-width:992px){ #sidebarToggle{display:flex !important;} }
+</style>
+{% endblock %}

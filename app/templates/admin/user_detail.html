@@ -1,0 +1,48 @@
+{% extends "layout_dashboard.html" %}
+{% block title %}{{ user.full_name }}{% endblock %}
+{% block page_title %}Client Profile{% endblock %}
+{% block sidebar %}{% include "partials/admin_sidebar.html" %}{% endblock %}
+
+{% block dash_content %}
+<div class="grid-2" style="align-items:start; gap:22px;">
+  <div class="glass" style="padding:1.8rem;">
+    <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px;">
+      <div class="avatar-circle" style="width:60px;height:60px; font-size:1.1rem;">{{ user.full_name[:2]|upper }}</div>
+      <div>
+        <h5 style="margin:0;">{{ user.full_name }}</h5>
+        <span class="text-muted-2" style="font-size:.85rem;">@{{ user.username }}</span>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div><span class="text-muted-2" style="font-size:.78rem;">Email</span><p style="margin:2px 0;">{{ user.email }}</p></div>
+      <div><span class="text-muted-2" style="font-size:.78rem;">Phone</span><p style="margin:2px 0;">{{ user.phone or '—' }}</p></div>
+      <div><span class="text-muted-2" style="font-size:.78rem;">Company</span><p style="margin:2px 0;">{{ user.company or '—' }}</p></div>
+      <div><span class="text-muted-2" style="font-size:.78rem;">Joined</span><p style="margin:2px 0;">{{ user.created_at.strftime('%d %b %Y') }}</p></div>
+    </div>
+    <div class="divider"></div>
+    <form method="POST" action="{{ url_for('admin.toggle_user_active', user_id=user.id) }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      {% if user.is_active_account %}
+      <button type="submit" class="btn btn-danger-soft btn-sm"><i class="bi bi-slash-circle"></i> Deactivate Account</button>
+      {% else %}
+      <button type="submit" class="btn btn-grad btn-sm"><i class="bi bi-check-circle"></i> Activate Account</button>
+      {% endif %}
+    </form>
+  </div>
+
+  <div class="glass" style="padding:1.8rem;">
+    <h6 style="margin-bottom:14px;">Project Requests ({{ requests|length }})</h6>
+    {% for r in requests %}
+    <a href="{{ url_for('admin.request_detail', request_id=r.id) }}" style="display:flex; justify-content:space-between; align-items:center; padding:.7rem 0; border-bottom:1px solid var(--border-soft);">
+      <div>
+        <div style="font-weight:600; font-size:.87rem;">{{ r.project_name }}</div>
+        <div class="text-muted-2 mono" style="font-size:.74rem;">{{ r.ticket_number }}</div>
+      </div>
+      <span class="badge-soft badge-{{ r.status_color }}">{{ r.status }}</span>
+    </a>
+    {% else %}
+    <div class="empty-state"><i class="bi bi-inbox"></i><p>No requests submitted yet.</p></div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

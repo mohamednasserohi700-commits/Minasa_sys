@@ -1,0 +1,24 @@
+{% extends "layout_dashboard.html" %}
+{% block title %}Messages{% endblock %}
+{% block page_title %}Messages{% endblock %}
+{% block sidebar %}{% include "partials/client_sidebar.html" %}{% endblock %}
+
+{% block dash_content %}
+<div class="glass" style="padding:.6rem;">
+  {% for t in threads %}
+  <a href="{{ url_for('client.request_detail', request_id=t.id) }}" style="display:flex; align-items:center; justify-content:space-between; padding:1rem 1.2rem; border-radius:12px; transition:background .2s;" onmouseover="this.style.background='var(--surface)'" onmouseout="this.style.background='transparent'">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <div class="icon-box" style="margin:0;"><i class="bi bi-chat-dots"></i></div>
+      <div>
+        <div style="font-weight:600; font-size:.9rem;">{{ t.project_name }}</div>
+        <div class="text-muted-2 mono" style="font-size:.76rem;">{{ t.ticket_number }}</div>
+      </div>
+    </div>
+    <span class="badge-soft badge-{{ t.status_color }}">{{ t.status }}</span>
+  </a>
+  <div class="divider"></div>
+  {% else %}
+  <div class="empty-state"><i class="bi bi-chat-square-text"></i><p>No conversations yet. Submit a project to start messaging our team.</p></div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "layout_dashboard.html" %}
+{% block title %}{{ ticket.ticket_number }}{% endblock %}
+{% block page_title %}{{ ticket.ticket_number }}{% endblock %}
+{% block sidebar %}{% include "partials/client_sidebar.html" %}{% endblock %}
+
+{% block dash_content %}
+<div class="grid-2" style="align-items:start; gap:22px;">
+  <div>
+    <div class="glass" style="padding:1.8rem; margin-bottom:20px;">
+      <div class="page-head">
+        <div>
+          <h4 style="margin:0 0 4px;">{{ ticket.project_name }}</h4>
+          <span class="text-muted-2 mono" style="font-size:.8rem;">{{ ticket.ticket_number }}</span>
+        </div>
+        <span class="badge-soft badge-{{ ticket.status_color }}">{{ ticket.status }}</span>
+      </div>
+      <div class="divider"></div>
+      <div class="grid-2">
+        <div><span class="text-muted-2" style="font-size:.78rem;">{{ t('field_platform') }}</span><p style="margin:2px 0;">{{ ticket.platform }}</p></div>
+        <div><span class="text-muted-2" style="font-size:.78rem;">{{ t('field_budget') }}</span><p style="margin:2px 0;">{{ ticket.budget or '—' }}</p></div>
+        <div><span class="text-muted-2" style="font-size:.78rem;">{{ t('field_delivery_time') }}</span><p style="margin:2px 0;">{{ ticket.delivery_time or '—' }}</p></div>
+        <div><span class="text-muted-2" style="font-size:.78rem;">{{ t('pr_col_submitted') }}</span><p style="margin:2px 0;">{{ ticket.created_at.strftime('%d %b %Y') }}</p></div>
+      </div>
+      <div class="divider"></div>
+      <span class="text-muted-2" style="font-size:.78rem;">{{ t('field_description') }}</span>
+      <p style="margin:6px 0 0; font-size:.9rem; line-height:1.7; color:var(--text-1);">{{ ticket.description }}</p>
+
+      {% if ticket.attachment_list() %}
+      <div class="divider"></div>
+      <span class="text-muted-2" style="font-size:.78rem;">{{ t('field_attachments') }}</span>
+      <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;">
+        {% for a in ticket.attachment_list() %}
+        <a href="{{ url_for('client.uploaded_file', filename=a) }}" class="chip"><i class="bi {{ a|file_icon }}"></i> {{ a.split('_',1)[-1] }}</a>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="glass" style="padding:1.8rem;">
+      <h6 style="margin-bottom:16px;"><i class="bi bi-chat-dots"></i> {{ t('pr_conversation') }}</h6>
+      <div style="max-height:360px; overflow-y:auto; margin-bottom:18px;">
+        {% for m in messages %}
+        <div style="display:flex; {{ 'flex-direction:row-reverse;' if not m.is_from_admin }} gap:10px; margin-bottom:14px;">
+          <div class="avatar-circle" style="width:34px;height:34px;font-size:.72rem; flex-shrink:0;">
+            {{ 'CF' if m.is_from_admin else current_user.full_name[:2]|upper }}
+          </div>
+          <div style="max-width:75%;">
+            <div class="glass" style="padding:.7rem 1rem; {{ 'background:var(--gradient-brand-soft);' if not m.is_from_admin }}">
+              <p style="margin:0; font-size:.87rem; line-height:1.6;">{{ m.body }}</p>
+            </div>
+            <div class="text-muted-2" style="font-size:.7rem; margin-top:4px; {{ 'text-align:right;' if not m.is_from_admin }}">{{ m.created_at|time_ago }}</div>
+          </div>
+        </div>
+        {% else %}
+        <div class="empty-state"><i class="bi bi-chat"></i><p>No messages yet. Send the first one below.</p></div>
+        {% endfor %}
+      </div>
+      <form method="POST" action="{{ url_for('client.reply_to_request', request_id=ticket.id) }}" style="display:flex; gap:10px;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="text" name="body" class="form-control" placeholder="{{ t('pr_reply_placeholder') }}" required>
+        <button type="submit" class="btn btn-grad"><i class="bi bi-send-fill"></i></button>
+      </form>
+    </div>
+  </div>
+
+  <div class="glass" style="padding:1.8rem;">
+    <h6 style="margin-bottom:16px;"><i class="bi bi-clock-history"></i> {{ t('pr_status_title') }}</h6>
+    <div class="timeline">
+      {% set stages = ['Pending','Reviewing','Approved','In Progress','Completed'] %}
+      {% set current_idx = stages.index(ticket.status) if ticket.status in stages else -1 %}
+      {% for s in stages %}
+      <div class="timeline-item" style="{{ 'opacity:.35;' if loop.index0 > current_idx else '' }}">
+        <h6 style="margin:0; font-size:.86rem;">{{ s }}</h6>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

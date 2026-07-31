@@ -1,0 +1,20 @@
+{% extends "layout_dashboard.html" %}
+{% block title %}Add Administrator{% endblock %}
+{% block page_title %}Add Administrator{% endblock %}
+{% block sidebar %}{% include "partials/admin_sidebar.html" %}{% endblock %}
+
+{% block dash_content %}
+<div class="glass" style="padding:2rem; max-width:520px;">
+  <p class="text-muted-2" style="font-size:.88rem; margin-bottom:20px;">
+    <i class="bi bi-shield-exclamation"></i> New administrators will have full system permissions. Grant access carefully.
+  </p>
+  <form method="POST" novalidate>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="field-group"><label class="form-label">Full Name</label><input type="text" name="full_name" class="form-control" required></div>
+    <div class="field-group"><label class="form-label">Username</label><input type="text" name="username" class="form-control" required></div>
+    <div class="field-group"><label class="form-label">Email</label><input type="email" name="email" class="form-control" required></div>
+    <div class="field-group"><label class="form-label">Password</label><input type="password" name="password" class="form-control" required></div>
+    <button type="submit" class="btn btn-grad btn-block"><i class="bi bi-shield-plus"></i> Create Administrator</button>
+  </form>
+</div>
+{% endblock %}

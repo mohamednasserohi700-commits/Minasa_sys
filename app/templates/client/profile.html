@@ -1,0 +1,70 @@
+{% extends "layout_dashboard.html" %}
+{% block title %}Profile{% endblock %}
+{% block page_title %}Profile Settings{% endblock %}
+{% block sidebar %}{% include "partials/client_sidebar.html" %}{% endblock %}
+
+{% block dash_content %}
+<div class="grid-2" style="align-items:start; gap:22px;">
+  <div class="glass" style="padding:1.8rem;">
+    <h6 style="margin-bottom:18px;"><i class="bi bi-person-circle"></i> Profile Information</h6>
+
+    <form method="POST" enctype="multipart/form-data" action="{{ url_for('client.upload_avatar') }}" style="display:flex; align-items:center; gap:16px; margin-bottom:24px;">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      {% if current_user.avatar_url %}
+        <img src="{{ url_for('client.uploaded_file', filename=current_user.avatar_url) }}" class="avatar-sm" style="width:64px;height:64px;">
+      {% else %}
+        <div class="avatar-circle" style="width:64px;height:64px; font-size:1.2rem;">{{ current_user.full_name[:2]|upper }}</div>
+      {% endif %}
+      <div>
+        <label class="btn btn-ghost btn-sm" style="cursor:pointer;">
+          <i class="bi bi-camera"></i> Change Photo
+          <input type="file" name="avatar" accept=".png,.jpg,.jpeg" style="display:none;" onchange="this.form.submit()">
+        </label>
+      </div>
+    </form>
+
+    <form method="POST" novalidate>
+      {{ form.hidden_tag() }}
+      <div class="field-group">
+        {{ form.full_name.label(class="form-label") }}
+        {{ form.full_name(class="form-control") }}
+      </div>
+      <div class="field-group">
+        <label class="form-label">Email</label>
+        <input class="form-control" value="{{ current_user.email }}" disabled>
+      </div>
+      <div class="grid-2">
+        <div class="field-group">
+          {{ form.phone.label(class="form-label") }}
+          {{ form.phone(class="form-control") }}
+        </div>
+        <div class="field-group">
+          {{ form.company.label(class="form-label") }}
+          {{ form.company(class="form-control") }}
+        </div>
+      </div>
+      {{ form.submit(class="btn btn-grad") }}
+    </form>
+  </div>
+
+  <div class="glass" style="padding:1.8rem;">
+    <h6 style="margin-bottom:18px;"><i class="bi bi-shield-lock"></i> Change Password</h6>
+    <form method="POST" action="{{ url_for('client.change_password') }}" novalidate>
+      {{ password_form.hidden_tag() }}
+      <div class="field-group">
+        {{ password_form.current_password.label(class="form-label") }}
+        {{ password_form.current_password(class="form-control") }}
+      </div>
+      <div class="field-group">
+        {{ password_form.new_password.label(class="form-label") }}
+        {{ password_form.new_password(class="form-control") }}
+      </div>
+      <div class="field-group">
+        {{ password_form.confirm_password.label(class="form-label") }}
+        {{ password_form.confirm_password(class="form-control") }}
+      </div>
+      {{ password_form.submit(class="btn btn-outline") }}
+    </form>
+  </div>
+</div>
+{% endblock %}
