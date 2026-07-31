@@ -12,12 +12,23 @@ load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 
 def _database_url() -> str:
-    """Normalize DATABASE_URL. Railway/Heroku-style postgres:// -> postgresql://"""
+    """Normalize DATABASE_URL. Railway/Heroku-style postgres:// -> postgresql://
+
+    For SQLite, always resolve to an ABSOLUTE path anchored at the project root.
+    Flask-SQLAlchemy silently redirects *relative* sqlite:/// paths into the
+    Flask `instance/` folder, which would silently disagree with any code
+    (like the backup/restore routes) that expects the db to live at the
+    project root. Resolving to an absolute path here removes that ambiguity.
+    """
     url = os.environ.get("DATABASE_URL", "").strip()
     if not url:
         return f"sqlite:///{os.path.join(BASE_DIR, 'clientflow.db')}"
     if url.startswith("postgres://"):
         url = url.replace("postgres://", "postgresql://", 1)
+    if url.startswith("sqlite:///") and not url.startswith("sqlite:////"):
+        relative_path = url[len("sqlite:///"):]
+        if not os.path.isabs(relative_path):
+            url = f"sqlite:///{os.path.join(BASE_DIR, relative_path)}"
     return url
 
 
