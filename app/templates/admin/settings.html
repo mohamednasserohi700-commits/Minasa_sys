@@ -32,6 +32,30 @@
         use <code>railway db</code> or <code>pg_dump</code> from your terminal — see the README for details.
       </p>
       <a href="{{ url_for('admin.backup_database') }}" class="btn btn-outline btn-block"><i class="bi bi-cloud-download"></i> Download Backup</a>
+
+      <div class="divider"></div>
+
+      <h6 style="margin-bottom:8px; color:var(--danger);"><i class="bi bi-exclamation-triangle-fill"></i> Restore from Backup</h6>
+      <p class="text-muted-2" style="font-size:.83rem; margin-bottom:14px;">
+        Uploading a backup file will <strong>replace all current data</strong> — requests, clients, messages,
+        and site content. A safety snapshot of the current database is taken automatically before restoring,
+        but this action should still be used with caution.
+      </p>
+      <form method="POST" action="{{ url_for('admin.restore_database') }}" enctype="multipart/form-data"
+            onsubmit="return confirm('This will overwrite ALL current data with the uploaded backup. Are you absolutely sure?');">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="field-group">
+          <label class="form-label">Backup File (.db / .sqlite / .sqlite3)</label>
+          <input type="file" name="backup_file" class="form-control" accept=".db,.sqlite,.sqlite3" required>
+        </div>
+        <div class="form-check" style="margin-bottom:14px;">
+          <input type="checkbox" name="confirm_restore" id="confirm_restore" required>
+          <label for="confirm_restore" style="font-size:.83rem; color:var(--text-1);">
+            I understand this will overwrite all current data and cannot be easily undone.
+          </label>
+        </div>
+        <button type="submit" class="btn btn-danger-soft btn-block"><i class="bi bi-arrow-counterclockwise"></i> Restore Database</button>
+      </form>
     </div>
 
     <div class="glass" style="padding:1.8rem;">
