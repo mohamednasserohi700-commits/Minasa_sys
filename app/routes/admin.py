@@ -225,6 +225,26 @@ def toggle_user_active(user_id):
     return redirect(url_for("admin.user_detail", user_id=user.id))
 
 
+@admin_bp.route("/users/<int:user_id>/reset-password", methods=["POST"])
+def admin_reset_user_password(user_id):
+    """Let an administrator set a brand-new password for a client who forgot theirs."""
+    user = User.query.get_or_404(user_id)
+    new_password = request.form.get("new_password", "").strip()
+
+    if len(new_password) < 6:
+        flash("Password must be at least 6 characters long.", "danger")
+        return redirect(url_for("admin.user_detail", user_id=user.id))
+
+    user.set_password(new_password)
+    log_activity(actor=current_user.username, action="Reset client password", target=user.username)
+    notify_user(user.id, "Password Changed",
+                "Your password was reset by our support team. If this wasn't expected, please contact us.",
+                icon="bi-shield-lock-fill")
+    db.session.commit()
+    flash(f"Password for {user.full_name} has been updated.", "success")
+    return redirect(url_for("admin.user_detail", user_id=user.id))
+
+
 @admin_bp.route("/users/create-admin", methods=["GET", "POST"])
 def create_admin():
     """Allow the existing administrator to create additional admin accounts."""
