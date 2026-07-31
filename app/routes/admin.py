@@ -1,4 +1,5 @@
 import os
+import shutil
 from datetime import datetime, timedelta, timezone
 from flask import (Blueprint, render_template, redirect, url_for, flash, request,
                     abort, send_file, current_app, jsonify, send_from_directory)
@@ -493,6 +494,67 @@ def backup_database():
     db.session.commit()
     return send_file(db_path, as_attachment=True,
                       download_name=f"clientflow_backup_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}.db")
+
+
+@admin_bp.route("/settings/restore", methods=["POST"])
+def restore_database():
+    """Restore the database from an uploaded SQLite backup file (SQLite dev environments only).
+
+    Safety measures:
+    - Only allowed when running on SQLite (PostgreSQL must be restored via pg_dump/psql).
+    - Requires the admin to explicitly confirm via a checkbox.
+    - Validates the uploaded file is a genuine SQLite database (checks the file header).
+    - Automatically snapshots the CURRENT database to a private backups/ folder before
+      overwriting anything, so an admin can always recover from a bad restore.
+    """
+    db_uri = current_app.config["SQLALCHEMY_DATABASE_URI"]
+    if not db_uri.startswith("sqlite"):
+        flash("Restore from a file is only available for SQLite. "
+              "For PostgreSQL on Railway, restore using `psql $DATABASE_URL < backup.sql`.", "warning")
+        return redirect(url_for("admin.settings"))
+
+    if not request.form.get("confirm_restore"):
+        flash("You must confirm the restore checkbox before proceeding.", "danger")
+        return redirect(url_for("admin.settings"))
+
+    upload = request.files.get("backup_file")
+    if not upload or not upload.filename:
+        flash("Please choose a .db backup file to restore.", "danger")
+        return redirect(url_for("admin.settings"))
+    if not upload.filename.lower().endswith((".db", ".sqlite", ".sqlite3")):
+        flash("Invalid file type. Please upload a .db/.sqlite/.sqlite3 backup file.", "danger")
+        return redirect(url_for("admin.settings"))
+
+    header = upload.stream.read(16)
+    upload.stream.seek(0)
+    if header != b"SQLite format 3\x00":
+        flash("This file does not look like a valid SQLite database. Restore aborted.", "danger")
+        return redirect(url_for("admin.settings"))
+
+    db_path = db_uri.replace("sqlite:///", "")
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    backups_dir = os.path.join(base_dir, "backups")
+    os.makedirs(backups_dir, exist_ok=True)
+
+    try:
+        db.session.remove()
+        db.engine.dispose()
+
+        # Automatic safety snapshot of the current database before it gets replaced.
+        if os.path.exists(db_path):
+            snapshot_name = f"pre_restore_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}.db"
+            shutil.copy2(db_path, os.path.join(backups_dir, snapshot_name))
+
+        upload.save(db_path)
+    except Exception as exc:
+        current_app.logger.exception("Database restore failed")
+        flash(f"Restore failed: {exc}", "danger")
+        return redirect(url_for("admin.settings"))
+
+    flash("Database restored successfully. A safety snapshot of the previous database was kept in "
+          "the /backups folder. Please restart the application for all changes to take full effect.",
+          "success")
+    return redirect(url_for("admin.settings"))
 
 
 @admin_bp.route("/activity-logs")
