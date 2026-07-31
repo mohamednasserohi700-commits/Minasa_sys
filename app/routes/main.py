@@ -31,6 +31,8 @@ def inject_globals():
             "contact_phone": SiteSetting.get("contact_phone", current_app.config["PROJECT_MANAGER_PHONE"]),
             "contact_address": SiteSetting.get("contact_address", "Cairo, Egypt"),
             "company_name": current_app.config["COMPANY_NAME"],
+            "facebook_url": SiteSetting.get("facebook_url", ""),
+            "whatsapp_number": SiteSetting.get("whatsapp_number", ""),
         }
     }
 
