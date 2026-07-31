@@ -10,10 +10,12 @@
           {{ t('footer_tagline') }}
         </p>
         <div style="display:flex; gap:10px; margin-top:16px;">
-          <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
-          <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
-          <a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a>
-          <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+          {% if site_settings.facebook_url %}
+          <a href="{{ site_settings.facebook_url }}" target="_blank" rel="noopener" class="social-icon" title="Facebook"><i class="bi bi-facebook"></i></a>
+          {% endif %}
+          {% if site_settings.whatsapp_number %}
+          <a href="https://wa.me/{{ site_settings.whatsapp_number | replace(' ', '') | replace('+', '') | replace('-', '') }}" target="_blank" rel="noopener" class="social-icon" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+          {% endif %}
         </div>
       </div>
 
@@ -50,7 +52,6 @@
       <span class="text-muted-2" style="font-size:.82rem;">© {{ current_year }} {{ site_settings.company_name if site_settings else 'System Makers' }}. {{ t('footer_rights') }}</span>
       <div style="display:flex; gap:18px; align-items:center;">
         <a href="{{ url_for('main.privacy_policy') }}" class="text-muted-2" style="font-size:.82rem; padding:0;">{{ t('footer_privacy') }}</a>
-        <span class="text-muted-2" style="font-size:.82rem;">{{ t('footer_built_with') }}</span>
       </div>
     </div>
   </div>
